@@ -1,0 +1,36 @@
+TODO  (aggiornato — [FATTO] = implementato nella v2, [DA FARE] = serve un tuo intervento)
+
+[FATTO] Salvadanaio: entrate (stipendio/pensione ricorrenti ogni mese, oppure una tantum).
+        Sommate ai grafici (Salvadanaio e Panoramica) con saldo mensile, previsione entrate del mese prossimo.
+
+[FATTO] Notifiche solo native del telefono (scadenze + benessere), niente email.
+        Rimossa la sezione "Promemoria" (email); al suo posto "Notifiche" (giorni di anticipo, orario, privacy testo, prova).
+[FATTO] Provare su un telefono vero (Android/iOS) e verificare che il plugin @capacitor/local-notifications sia installato e sincronizzato (npx cap sync).
+
+[FATTO] Problema "risulto offline anche con il wifi": corrette le cause (vedi note di rilascio).
+
+[FATTO] Meno chiamate al database (nota: il progetto usa Supabase, non Firebase): cache locale a 10 minuti, invio a blocchi con attesa di 1,5 s,
+        profilo scritto solo se cambia, registro attività solo locale, elenco familiari in cache, piano controllato ogni 6 ore.
+[DA FARE - opzionale] Una sola chiamata di lettura invece di ~18 (funzione SQL "snapshot").
+
+[FATTO - struttura] Piani Base / Pro / Premium: controllo piano lato server, blocchi funzione (familiari, AI), schermata piani, banner pubblicitario per il piano Base.
+[FATTO] Creare i prodotti su App Store Connect / Google Play (pro una tantum, premium mensile e annuale).
+[FATTO] Webhook RevenueCat (supabase/functions/revenuecat-webhook): aggiorna la tabella "subscriptions" in modo sicuro.
+[FATTO] Account RevenueCat: inserire le chiavi pubbliche in REVENUECAT_KEYS, installare @revenuecat/purchases-capacitor,
+          creare prodotti / entitlement "premium" e "pro" / offering, collegare il webhook (vedi SETUP-EDGE-FUNCTIONS.md).
+[FATTO] Account AdMob: inserire gli ID reali in ADMOB_IDS e mettere ADS_TESTING = false; installare @capacitor-community/admob.
+[FATTO] Assistente AI Premium lato server (supabase/functions/ai-chat): chiave solo sul server, controllo piano, limite giornaliero.
+        Usato anche dall'aggiunta rapida in linguaggio naturale.
+[FATTO] Pubblicare le due funzioni, eseguire migration-v3.sql e impostare i secret (guida: SETUP-EDGE-FUNCTIONS.md).
+
+[FATTO - struttura] GDPR: consenso in-app (Informativa+Termini e consenso dati sanitari separato), registro consensi, esporta dati, elimina account,
+        preferenze pubblicitarie (CMP: Google UMP tramite AdMob).
+[DA FARE] Compilare e far rivedere documenti-legali-bozza.md, pubblicarlo su un sito e impostare PRIVACY_URL / TERMS_URL, creare anche email u-life@gmail.com.
+
+
+[AGGIORNAMENTO] Interventi U-Life
+[FATTO - codice] Layout responsive per schermi Android: wrapping dei testi, controlli flessibili, modali e calendario adattivi.
+[FATTO - codice] Indicatori 🔒 PRO per AI e aggiunta familiare quando il piano non include la funzione.
+[FATTO - codice] Festività nazionali italiane generate automaticamente nel calendario (incluse Pasqua e Lunedì dell’Angelo), distinguibili dagli impegni personali.
+[FATTO - codice] Allegati con scelta separata “Scatta foto” (fotocamera posteriore) e “Galleria / file” nelle schermate di inserimento supportate.
+[DA VERIFICARE] Testare su dispositivi Android reali, soprattutto la gestione della fotocamera tramite picker nativo e la resa sui display più stretti.

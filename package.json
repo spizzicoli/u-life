@@ -1,0 +1,29 @@
+{
+  "name": "taccuino-hybrid",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Il mio taccuino - versione ibrida (Capacitor + Supabase) per Android e iOS",
+  "scripts": {
+    "sync": "npx cap sync",
+    "assets": "npx capacitor-assets generate",
+    "open:ios": "npx cap open ios",
+    "open:android": "npx cap open android"
+  },
+  "dependencies": {
+    "@capacitor-community/admob": "^8.1.0",
+    "@capacitor/android": "^8.5.2",
+    "@capacitor/assets": "^3.0.5",
+    "@capacitor/core": "^8.5.2",
+    "@capacitor/ios": "^8.5.2",
+    "@capacitor/local-notifications": "^8.3.1",
+    "sharp": "^0.35.4"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "^8.5.2",
+    "typescript": "^7.0.2"
+  },
+  "allowScripts": {
+    "sharp@0.32.6": true,
+    "sharp@0.35.4": true
+  }
+}
