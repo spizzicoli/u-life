@@ -1,5 +1,111 @@
 # Il mio taccuino — versione ibrida (Android + iOS)
 
+## Upgrade Pro e Premium per gli account di test (Supabase)
+
+Per testare le funzionalità Pro e Premium senza effettuare pagamenti, puoi assegnare manualmente un piano ai tuoi account di test direttamente dal database Supabase.
+
+**Come funziona:** l'app determina il piano tramite le funzioni `get_my_plan()` e `plan_of()`, che leggono la tabella `public.subscriptions`.
+
+* **Pro:** accesso a vita (`pro_lifetime = true`).
+* **Premium:** accesso temporaneo fino alla data indicata in `premium_until`.
+* Se non è assegnato nessuno dei due piani, l'account risulta Free.
+
+> **Attenzione:** usa questa procedura solo con account di test. Le modifiche vengono applicate al database e non sono semplici modifiche grafiche dell'app. Non modificare `app.js` o `supabaseClient.js` per simulare il piano: la verifica viene eseguita anche lato server.
+
+### 1. Recuperare l'UUID dell'account
+
+1. Accedi al progetto su [Supabase](https://supabase.com).
+2. Apri **SQL Editor → New query**.
+3. Inserisci l'email dell'account di test nella query:
+
+```sql
+SELECT id, email
+FROM auth.users
+WHERE email = 'EMAIL_ACCOUNT_TEST';
+```
+
+4. Premi **Run** e copia il valore `id` dell'account corretto. Questo è l'UUID da usare nei passaggi successivi.
+
+### 2. Assegnare Pro a vita
+
+Nel SQL Editor, esegui la query seguente dopo aver sostituito `UUID_ACCOUNT_TEST` con l'UUID recuperato al passaggio 1.
+
+```sql
+INSERT INTO public.subscriptions
+    (user_id, pro_lifetime, premium_until, source, updated_at)
+VALUES
+    ('UUID_ACCOUNT_TEST', true, NULL, 'test_upgrade', now())
+ON CONFLICT (user_id)
+DO UPDATE SET
+    pro_lifetime = true,
+    premium_until = NULL,
+    source = 'test_upgrade',
+    updated_at = now();
+```
+
+L'account risulterà Pro a vita. L'eventuale scadenza Premium precedente viene rimossa.
+
+### 3. Assegnare Premium per 30 giorni
+
+Per assegnare Premium temporaneamente, esegui questa query:
+
+```sql
+INSERT INTO public.subscriptions
+    (user_id, pro_lifetime, premium_until, source, updated_at)
+VALUES
+    ('UUID_ACCOUNT_TEST', false, now() + interval '30 days', 'test_upgrade', now())
+ON CONFLICT (user_id)
+DO UPDATE SET
+    pro_lifetime = false,
+    premium_until = now() + interval '30 days',
+    source = 'test_upgrade',
+    updated_at = now();
+```
+
+L'account risulterà Premium per 30 giorni a partire dal momento dell'esecuzione.
+
+### 4. Verificare il piano assegnato
+
+Dopo l'upgrade, esegui questa query per verificare il risultato:
+
+```sql
+SELECT
+    s.user_id,
+    s.pro_lifetime,
+    s.premium_until,
+    s.source,
+    public.plan_of(s.user_id) AS current_plan
+FROM public.subscriptions s
+WHERE s.user_id = 'UUID_ACCOUNT_TEST';
+```
+
+Il campo `current_plan` deve restituire `pro` oppure `premium`, in base al piano assegnato.
+
+Dopo la verifica, esci e accedi nuovamente all'app con l'account di test, quindi controlla che il piano sia aggiornato.
+
+### 5. Riportare l'account a Free
+
+Per rimuovere l'upgrade di test e riportare l'account a Free, esegui:
+
+```sql
+UPDATE public.subscriptions
+SET
+    pro_lifetime = false,
+    premium_until = NULL,
+    source = 'test_reset',
+    updated_at = now()
+WHERE user_id = 'UUID_ACCOUNT_TEST';
+```
+
+### Nota tecnica
+
+Le query di upgrade utilizzano `ON CONFLICT (user_id)`, che richiede un vincolo UNIQUE o una chiave primaria su `user_id`. Se Supabase segnala che non esiste un vincolo corrispondente, verifica i vincoli della tabella prima di procedere.
+
+La funzione `plan_of()` assegna priorità a Premium se `premium_until` è nel futuro; in caso contrario, restituisce Pro se `pro_lifetime = true`. Se nessuna condizione è soddisfatta, restituisce Free.
+
+Questa procedura modifica il piano nel database Supabase. Eventuali controlli aggiuntivi presenti nelle Edge Function, ad esempio `ai-chat`, restano attivi e devono essere verificati separatamente.
+
+
 Questo è un progetto **separato** dalla versione che già usi sul PC (quella non la tocchiamo). L'obiettivo qui è arrivare a un'app installabile su telefono, gratis, usando:
 - **Supabase** (gratuito) come database e sistema di login, al posto del server sul tuo PC
 - **Capacitor** per impacchettare l'app in un contenitore installabile su Android e iOS
