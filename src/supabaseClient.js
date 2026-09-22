@@ -30,8 +30,17 @@ const SYNC_ACTIVITY_LOG = false;
 const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 // ---------- Autenticazione (email + password) ----------
+const AUTH_REDIRECT_URL = 'ulife://auth/callback';
+
 async function signUp(email, password) {
-  const { data, error } = await sb.auth.signUp({ email, password });
+  const { data, error } = await sb.auth.signUp({
+    email,
+    password,
+    options: {
+      emailRedirectTo: AUTH_REDIRECT_URL
+    }
+  });
+
   return { data, error };
 }
 async function signIn(email, password) {
