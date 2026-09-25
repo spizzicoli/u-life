@@ -1,3 +1,4 @@
+```yaml
 workflows:
   ios-debug:
     name: u-life iOS Debug
@@ -15,15 +16,25 @@ workflows:
         script: |
           npx cap sync ios
 
-      - name: Build iOS Simulator
+      - name: Build iOS device unsigned
         script: |
           cd ios
           xcodebuild \
             -workspace App/App.xcworkspace \
             -scheme App \
             -configuration Debug \
-            -sdk iphonesimulator \
-            -derivedDataPath build
+            -sdk iphoneos \
+            -derivedDataPath build \
+            CODE_SIGNING_ALLOWED=NO \
+            CODE_SIGNING_REQUIRED=NO
+
+      - name: Create IPA
+        script: |
+          cd ios/build/Build/Products/Debug-iphoneos
+          rm -rf Payload
+          mkdir Payload
+          cp -R App.app Payload/
+          zip -qry u-life.ipa Payload
 
     artifacts:
-      - ios/build/Build/Products/Debug-iphonesimulator/*.app
+      - ios/build/Build/Products/Debug-iphoneos/u-life.ipa
