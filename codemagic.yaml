@@ -1,0 +1,29 @@
+workflows:
+  ios-debug:
+    name: u-life iOS Debug
+    instance_type: mac_mini_m2
+
+    environment:
+      node: 22
+
+    scripts:
+      - name: Install dependencies
+        script: |
+          npm install
+
+      - name: Sync Capacitor iOS
+        script: |
+          npx cap sync ios
+
+      - name: Build iOS
+        script: |
+          cd ios
+          xcodebuild \
+            -workspace App/App.xcworkspace \
+            -scheme App \
+            -configuration Debug \
+            -sdk iphoneos \
+            -derivedDataPath build
+
+    artifacts:
+      - ios/build/Build/Products/Debug-iphoneos/*.app
