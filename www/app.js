@@ -48,14 +48,14 @@ const ICONS = {
   calendar: `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="4" y="5.5" width="16" height="14" rx="2.2" stroke="currentColor" stroke-width="1.7"/><path d="M4 9.5h16" stroke="currentColor" stroke-width="1.7"/><path d="M8.5 3.5v3M15.5 3.5v3" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><circle cx="8.6" cy="13.2" r="1" fill="currentColor"/><circle cx="12" cy="13.2" r="1" fill="currentColor"/><circle cx="15.4" cy="13.2" r="1" fill="currentColor"/><circle cx="8.6" cy="16.4" r="1" fill="currentColor"/><circle cx="12" cy="16.4" r="1" fill="currentColor"/></svg>`,
   doc: `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M7 3.5h7l4 4V19a1.5 1.5 0 0 1-1.5 1.5h-9A1.5 1.5 0 0 1 6 19V5A1.5 1.5 0 0 1 7 3.5Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M14 3.5V7a1 1 0 0 0 1 1h3.5" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M9 12h6M9 15h6M9 9h2" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>`,
   admin: `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="4" y="3.5" width="16" height="17" rx="2" stroke="currentColor" stroke-width="1.6"/><path d="M8 8h8M8 12h8M8 16h5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>`,
-  gear: `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.6"/><path d="M19.4 13.3c.05-.45.05-.9 0-1.35l1.5-1.15-1.5-2.5-1.8.45c-.35-.3-.75-.55-1.2-.75L15.9 6h-3l-.5 1.95c-.45.2-.85.45-1.2.75l-1.8-.45-1.5 2.5 1.5 1.15c-.05.45-.05.9 0 1.35l-1.5 1.15 1.5 2.5 1.8-.45c.35.3.75.55 1.2.75L12.9 20h3l.5-1.95c.45-.2.85-.45 1.2-.75l1.8.45 1.5-2.5-1.5-1.15Z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></svg>`,
+  gear: `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><line x1="4" y1="7" x2="20" y2="7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><circle cx="14.5" cy="7" r="2.3" fill="var(--card)" stroke="currentColor" stroke-width="1.8"/><line x1="4" y1="12" x2="20" y2="12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><circle cx="8.5" cy="12" r="2.3" fill="var(--card)" stroke="currentColor" stroke-width="1.8"/><line x1="4" y1="17" x2="20" y2="17" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><circle cx="16" cy="17" r="2.3" fill="var(--card)" stroke="currentColor" stroke-width="1.8"/></svg>`,
   search: `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="11" cy="11" r="6.5" stroke="currentColor" stroke-width="1.8"/><path d="m20 20-4.3-4.3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>`,
   sun: `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="1.7"/><path d="M12 2.5v2.2M12 19.3v2.2M4.9 4.9l1.6 1.6M17.5 17.5l1.6 1.6M2.5 12h2.2M19.3 12h2.2M4.9 19.1l1.6-1.6M17.5 6.5l1.6-1.6" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>`,
   moon: `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M20 14.2A8.3 8.3 0 1 1 9.8 4a6.6 6.6 0 0 0 10.2 10.2Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg>`,
   print: `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M7 8.5V4h10v4.5" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><rect x="4.5" y="8.5" width="15" height="7.5" rx="1.5" stroke="currentColor" stroke-width="1.7"/><path d="M7 14h10v6H7z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg>`,
   lock: `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="5" y="10.5" width="14" height="9" rx="2" stroke="currentColor" stroke-width="1.7"/><path d="M8 10.5V8a4 4 0 0 1 8 0v2.5" stroke="currentColor" stroke-width="1.7"/></svg>`,
   undo: `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6 8H15.5a4.5 4.5 0 0 1 0 9H10" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><path d="M9 4.5 5.5 8 9 11.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
-  briefing: `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="4" y="6.5" width="13.5" height="14" rx="2" stroke="currentColor" stroke-width="1.6"/><path d="M8 4v5M13.5 4v5M4 10.5h13.5M7.5 14h6M7.5 17h4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><circle cx="18.2" cy="6.2" r="3.2" fill="var(--c-calendario-soft)" stroke="currentColor" stroke-width="1.3"/><path d="M18.2 4.7v1.7l1.1.7" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>`,
+  briefing: `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="4.3" stroke="currentColor" stroke-width="1.8"/><path d="M12 3v2.2M12 18.8V21M21 12h-2.2M5.2 12H3M18.4 5.6l-1.55 1.55M7.15 16.85l-1.55 1.55M18.4 18.4l-1.55-1.55M7.15 7.15 5.6 5.6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>`,
   wand: `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5 19 17 7" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><path d="M14 4.5v2M17.5 6l-1.4 1.4M20.5 9.5h-2M7 15v2M4.5 18.5h2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>`,
   mic: `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="9" y="3.5" width="6" height="10" rx="3" stroke="currentColor" stroke-width="1.6"/><path d="M6 11a6 6 0 0 0 12 0M12 17v3.5M9 20.5h6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>`,
   droplet: `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 3.5s6 6.8 6 11a6 6 0 1 1-12 0c0-4.2 6-11 6-11Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>`,
@@ -220,7 +220,7 @@ function showSyncError(){
 function normalizeState(){
   if(!state.settings) state.settings = {};
   if(state.settings.reminderDaysAhead===undefined) state.settings.reminderDaysAhead = 3;
-  if(!state.settings.theme) state.settings.theme = 'light';
+  state.settings.theme = resolveThemeId(state.settings.theme);
   if(state.settings.pin===undefined) state.settings.pin = '0584';
   if(state.settings.pinEnabled===undefined) state.settings.pinEnabled = false;
   if(state.settings.autoLockMinutes===undefined) state.settings.autoLockMinutes = 10;
@@ -417,23 +417,86 @@ async function initApp(){
   }catch(e){ /* nessuna sessione valida: mostro il login */ }
   showAuthScreen('login');
 }
-function showAuthScreen(mode){
+// ---------- credenziali salvate su questo dispositivo (comodità, non un vero password manager) ----------
+const DEVICE_CRED_KEY = 'taccuino-device-credential';
+function saveDeviceCredential(email, password){
+  try{ localStorage.setItem(DEVICE_CRED_KEY, JSON.stringify({ email, password, savedAt: Date.now() })); }catch(e){}
+}
+function readDeviceCredential(){
+  try{ const raw = localStorage.getItem(DEVICE_CRED_KEY); return raw ? JSON.parse(raw) : null; }catch(e){ return null; }
+}
+function forgetDeviceCredential(){
+  try{ localStorage.removeItem(DEVICE_CRED_KEY); }catch(e){}
+}
+// Chiede se salvare l'accesso; in ogni caso, dopo la scelta, prosegue con afterFn (il login/registrazione non aspetta la risposta).
+function offerSaveCredential(email, password, afterFn){
+  modalLocked = true;
+  window._pendingCred = { email, password };
+  window._credAfterFn = afterFn;
+  openModal(`
+    <h3>Salvare l'accesso su questo dispositivo?</h3>
+    <div class="section-label">La prossima volta potrai accedere più velocemente, senza riscrivere email e password.</div>
+    <div class="notice">Le credenziali restano solo su questo telefono, mai su Supabase. Usa questa opzione solo su un dispositivo protetto da PIN, impronta o Face ID.</div>
+    <div class="modal-actions">
+      <button class="btn ghost" onclick="resolveSaveCredential(false)">Non salvare</button>
+      <button class="btn primary" onclick="resolveSaveCredential(true)">Salva</button>
+    </div>`);
+}
+function resolveSaveCredential(save){
+  modalLocked = false;
+  const cred = window._pendingCred; window._pendingCred = null;
+  if(save && cred) saveDeviceCredential(cred.email, cred.password);
+  closeModal();
+  const fn = window._credAfterFn; window._credAfterFn = null;
+  if(fn) fn();
+}
+function showAuthScreen(mode, opts){
+  opts = opts || {};
   const box = document.getElementById('lockScreen');
   document.getElementById('app').style.display='none';
   box.classList.add('active');
   const isSignup = mode==='signup';
+  const saved = (!isSignup && !opts.manual) ? readDeviceCredential() : null;
+  if(saved){
+    box.innerHTML = `
+      <div class="lock-box">
+        <h2>Bentornato</h2>
+        <div class="sub">Accedi rapidamente con l'account salvato su questo dispositivo.</div>
+        <div class="notice" style="text-align:left;">${esc(saved.email)}</div>
+        <div id="authError" class="notice" style="display:none;margin-bottom:12px;"></div>
+        <button class="btn primary" style="width:100%;margin-bottom:10px;" onclick="quickDeviceLogin()">Accedi</button>
+        <button class="link-toggle" onclick="showAuthScreen('login',{manual:true})">Usa un altro account</button>
+        <div style="margin-top:10px;"><button class="link-toggle" onclick="forgetDeviceCredential(); showAuthScreen('login',{manual:true});">Dimentica questo account</button></div>
+      </div>`;
+    return;
+  }
   box.innerHTML = `
     <div class="lock-box">
       <h2>${isSignup?'Crea il tuo account':'Bentornato'}</h2>
       <div class="sub">${isSignup?'Bastano email e password: i tuoi dati saranno solo tuoi.':'Accedi con la tua email per continuare'}</div>
-      <input class="pin-input" id="auth_email" type="email" placeholder="Email" style="letter-spacing:normal;font-size:15px;text-align:left;padding-left:14px;">
-      <input class="pin-input" id="auth_password" type="password" placeholder="Password" style="letter-spacing:normal;font-size:15px;text-align:left;padding-left:14px;">
+      <input class="pin-input" id="auth_email" type="email" autocomplete="username" placeholder="Email" style="letter-spacing:normal;font-size:15px;text-align:left;padding-left:14px;">
+      <input class="pin-input" id="auth_password" type="password" autocomplete="${isSignup?'new-password':'current-password'}" placeholder="Password" style="letter-spacing:normal;font-size:15px;text-align:left;padding-left:14px;">
       <div id="authError" class="notice" style="display:none;margin-bottom:12px;"></div>
       <button class="btn primary" style="width:100%;margin-bottom:10px;" onclick="handleAuthSubmit('${mode}')">${isSignup?'Registrati':'Accedi'}</button>
       <button class="link-toggle" onclick="showAuthScreen('${isSignup?'login':'signup'}')">${isSignup?'Hai già un account? Accedi':'Non hai un account? Registrati'}</button>
     </div>`;
   const pwInput = document.getElementById('auth_password');
   pwInput.addEventListener('keyup', (e)=>{ if(e.key==='Enter') handleAuthSubmit(mode); });
+}
+async function quickDeviceLogin(){
+  const saved = readDeviceCredential();
+  const errBox = document.getElementById('authError');
+  if(!saved){ showAuthScreen('login',{manual:true}); return; }
+  if(errBox) errBox.style.display='none';
+  const { error } = await taccuinoDB.signIn(saved.email, saved.password);
+  if(error){
+    forgetDeviceCredential();
+    if(errBox){ errBox.textContent = 'Le credenziali salvate non sono più valide: accedi di nuovo.'; errBox.style.display='block'; }
+    setTimeout(()=>showAuthScreen('login',{manual:true}), 1200);
+    return;
+  }
+  document.getElementById('lockScreen').classList.remove('active');
+  await loadState();
 }
 async function handleAuthSubmit(mode){
   const email = val('auth_email').trim();
@@ -445,14 +508,20 @@ async function handleAuthSubmit(mode){
   const fn = mode==='signup' ? taccuinoDB.signUp : taccuinoDB.signIn;
   const { data, error } = await fn(email, password);
   if(error){ errBox.textContent = error.message; errBox.style.display='block'; return; }
-  if(mode==='signup' && !data.session){
-    errBox.className='notice';
-    errBox.textContent = 'Account creato! Controlla la tua email per confermarlo, poi torna qui ad accedere.';
-    errBox.style.display='block';
-    return;
-  }
-  document.getElementById('lockScreen').classList.remove('active');
-  await loadState();
+  const proceed = async () => {
+    if(mode==='signup' && !data.session){
+      errBox.className='notice';
+      errBox.textContent = 'Account creato! Controlla la tua email per confermarlo, poi torna qui ad accedere.';
+      errBox.style.display='block';
+      return;
+    }
+    document.getElementById('lockScreen').classList.remove('active');
+    await loadState();
+  };
+  const saved = readDeviceCredential();
+  const alreadySavedThis = saved && saved.email===email && saved.password===password;
+  if(alreadySavedThis) await proceed();
+  else offerSaveCredential(email, password, proceed);
 }
 async function logout(){
   if(pendingSync){
@@ -461,11 +530,98 @@ async function logout(){
   }
   await taccuinoDB.signOut();
   clearLocalCaches();          // sul dispositivo non devono restare i dati dell'account appena chiuso
+  // Le credenziali salvate restano: è il senso stesso del "ricorda l'accesso" — si tolgono solo
+  // esplicitamente dalla schermata di accesso ("Dimentica questo account") o eliminando l'account.
   unlocked = false;
   location.reload();
 }
-function applyTheme(){ document.documentElement.setAttribute('data-theme', state.settings.theme || 'light'); }
-function toggleTheme(){ state.settings.theme = (state.settings.theme==='dark') ? 'light' : 'dark'; applyTheme(); saveState(); }
+// ---------- temi ----------
+// Ogni tema definisce le stesse variabili CSS: applicarne uno significa scrivere questi valori
+// come custom properties su <html>, così style.css non deve sapere nulla dei singoli temi.
+const THEMES = [
+  { id:'light-modern', label:'Moderno', mode:'light', desc:'Il tema originale: azzurro e bianco, pulito e luminoso.', vars:{
+    paper:'#EBF8FF', 'app-background':'#EBF8FF', card:'#FFFFFF', surface:'#FDFCFA', 'input-bg':'#FFFFFF',
+    ink:'#051923', 'ink-soft':'#4F7A91', line:'#CDE6F4', primary:'#0582CA', 'primary-hover':'#003554',
+    'c-salute':'#00A6FB', 'c-salute-soft':'rgba(0,166,251,0.14)',
+    'c-casa':'#006494', 'c-casa-soft':'rgba(0,100,148,0.13)',
+    'c-salvadanaio':'#003554', 'c-salvadanaio-soft':'rgba(0,53,84,0.12)',
+    'c-auto':'#051923', 'c-auto-soft':'rgba(5,25,35,0.09)',
+    'c-calendario':'#0582CA', 'c-calendario-soft':'rgba(5,130,202,0.14)',
+    'tab-active-bg':'#051923', 'tab-active-ink':'#FFFFFF', 'toast-bg':'#051923', 'toast-ink':'#FFFFFF'
+  }},
+  { id:'light-classic', label:'Classico', mode:'light', desc:'Carta e inchiostro: avorio caldo, terracotta e oliva.', vars:{
+    paper:'#F6EFE2', 'app-background':'#F6EFE2', card:'#FFFDF8', surface:'#FBF3E4', 'input-bg':'#FFFFFF',
+    ink:'#3B2A1E', 'ink-soft':'#8A7660', line:'#E4D5BC', primary:'#A9642B', 'primary-hover':'#7C4A1F',
+    'c-salute':'#B5563F', 'c-salute-soft':'rgba(181,86,63,0.14)',
+    'c-casa':'#6E7A4F', 'c-casa-soft':'rgba(110,122,79,0.14)',
+    'c-salvadanaio':'#7C4A1F', 'c-salvadanaio-soft':'rgba(124,74,31,0.13)',
+    'c-auto':'#3B2A1E', 'c-auto-soft':'rgba(59,42,30,0.09)',
+    'c-calendario':'#A9642B', 'c-calendario-soft':'rgba(169,100,43,0.15)',
+    'tab-active-bg':'#3B2A1E', 'tab-active-ink':'#FFF8EC', 'toast-bg':'#3B2A1E', 'toast-ink':'#FFF8EC'
+  }},
+  { id:'dark-modern', label:'Moderno', mode:'dark', desc:'Il tema scuro originale: blu notte e ciano.', vars:{
+    paper:'#051923', 'app-background':'#051923', card:'#0B2A3D', surface:'#0E3348', 'input-bg':'#0A2534',
+    ink:'#EAF6FF', 'ink-soft':'#7FAFC7', line:'#123B52', primary:'#00A6FB', 'primary-hover':'#33B8FC',
+    'c-salute':'#00A6FB', 'c-salute-soft':'rgba(0,166,251,0.24)',
+    'c-casa':'#2E9BC9', 'c-casa-soft':'rgba(0,100,148,0.30)',
+    'c-salvadanaio':'#2C6F9E', 'c-salvadanaio-soft':'rgba(0,53,84,0.38)',
+    'c-auto':'#8FD3F5', 'c-auto-soft':'rgba(255,255,255,0.07)',
+    'c-calendario':'#39A8E0', 'c-calendario-soft':'rgba(5,130,202,0.26)',
+    'tab-active-bg':'#00A6FB', 'tab-active-ink':'#051923', 'toast-bg':'#00A6FB', 'toast-ink':'#051923'
+  }},
+  { id:'dark-classic', label:'Classico', mode:'dark', desc:'Studio la sera: espresso scuro e rame antico.', vars:{
+    paper:'#221812', 'app-background':'#221812', card:'#2E2018', surface:'#37271C', 'input-bg':'#2A1D15',
+    ink:'#F3E6D3', 'ink-soft':'#BBA084', line:'#4A3626', primary:'#D89A4E', 'primary-hover':'#E8B36B',
+    'c-salute':'#D2795A', 'c-salute-soft':'rgba(210,121,90,0.24)',
+    'c-casa':'#8FA06B', 'c-casa-soft':'rgba(143,160,107,0.22)',
+    'c-salvadanaio':'#C99A4B', 'c-salvadanaio-soft':'rgba(201,154,75,0.24)',
+    'c-auto':'#E8D9C2', 'c-auto-soft':'rgba(255,255,255,0.07)',
+    'c-calendario':'#D89A4E', 'c-calendario-soft':'rgba(216,154,78,0.26)',
+    'tab-active-bg':'#D89A4E', 'tab-active-ink':'#221812', 'toast-bg':'#D89A4E', 'toast-ink':'#221812'
+  }},
+  { id:'dark-aesthetic', label:'Aesthetic', mode:'dark', desc:'Prugna e malva: tenue, morbido, un po\' sognante.', vars:{
+    paper:'#160E1E', 'app-background':'#160E1E', card:'#20142B', surface:'#271A34', 'input-bg':'#1C1225',
+    ink:'#F1E8FA', 'ink-soft':'#A594BE', line:'#3B2A4E', primary:'#C879D6', 'primary-hover':'#E39BEC',
+    'c-salute':'#F08FB0', 'c-salute-soft':'rgba(240,143,176,0.22)',
+    'c-casa':'#7FB6C9', 'c-casa-soft':'rgba(127,182,201,0.20)',
+    'c-salvadanaio':'#9C8CF0', 'c-salvadanaio-soft':'rgba(156,140,240,0.22)',
+    'c-auto':'#D8CCF0', 'c-auto-soft':'rgba(255,255,255,0.07)',
+    'c-calendario':'#C879D6', 'c-calendario-soft':'rgba(200,121,214,0.24)',
+    'tab-active-bg':'#C879D6', 'tab-active-ink':'#160E1E', 'toast-bg':'#C879D6', 'toast-ink':'#160E1E'
+  }}
+];
+const THEME_CACHE_KEY = 'taccuino-last-theme';
+// Vecchi valori salvati ('light'/'dark', da prima che esistessero 5 temi) vengono convertiti una volta per tutte.
+function resolveThemeId(id){
+  if(id==='light') return 'light-modern';
+  if(id==='dark') return 'dark-modern';
+  if(THEMES.some(t=>t.id===id)) return id;
+  return 'light-modern';
+}
+function applyThemeVars(theme){
+  const root = document.documentElement;
+  root.setAttribute('data-theme', theme.mode);
+  root.setAttribute('data-theme-id', theme.id);
+  Object.keys(theme.vars).forEach(k => root.style.setProperty('--'+k, theme.vars[k]));
+  try{ localStorage.setItem(THEME_CACHE_KEY, theme.id); }catch(e){}
+}
+function applyTheme(){
+  state.settings.theme = resolveThemeId(state.settings.theme);
+  applyThemeVars(THEMES.find(t=>t.id===state.settings.theme) || THEMES[0]);
+}
+function selectTheme(id){
+  if(!THEMES.some(t=>t.id===id)) return;
+  state.settings.theme = id;
+  applyTheme();
+  saveState();
+}
+// Applica subito l'ultimo tema usato su questo dispositivo (letto dalla cache locale, non dall'account),
+// così anche la schermata di accesso — prima ancora di sapere chi sei — non mostra un lampo del tema sbagliato.
+(function bootTheme(){
+  let id = 'light-modern';
+  try{ id = localStorage.getItem(THEME_CACHE_KEY) || id; }catch(e){}
+  applyThemeVars(THEMES.find(t=>t.id===resolveThemeId(id)) || THEMES[0]);
+})();
 
 // ---------- PIN + blocco automatico ----------
 function showLock(){
@@ -510,7 +666,7 @@ function setupAutoLock(){
 }
 function quickUpdateSetting(key, value){
   pushUndo(); state.settings[key]=value; saveState(); toast('Impostazione aggiornata.'); }
-function quickSetTheme(v){ state.settings.theme=v; applyTheme(); saveState(); }
+function quickSetTheme(v){ selectTheme(v); }   // alias per compatibilità con eventuale codice esterno
 function changePinFromSettings(){
   pushUndo();
   const v = val('set_newPin'); if(!v) return;
@@ -967,21 +1123,18 @@ function render(){
   const tabsScrollLeft = tabs ? tabs.scrollLeft : 0;
   app.innerHTML = `
     <div class="header">
-      <div>
+      <div class="header-title">
         <h1>Ciao ${esc((state.settings.ownerName || '').trim() || currentUserName || 'bentornato')} ${syncBadgeHTML()}</h1>
         <div class="sub">Un piccolo spazio tutto tuo, per prenderti cura di ciò che conta ✨</div>
       </div>
       <div class="header-right">
-        <div class="search-wrap" id="searchWrap">
-          <div class="search-box">${ICONS.search}<input id="searchInput" placeholder="Cerca ovunque…" oninput="onSearchInput(this.value)" onfocus="renderSearchDropdown()"><button class="mic-btn" id="searchMicBtn" title="Cerca a voce" onclick="startVoiceSearch()">${ICONS.mic}</button></div>
-          <div class="search-results" id="searchResults"></div>
-        </div>
         <button class="btn icon-btn" title="Recap giornaliero" aria-label="Recap giornaliero" onclick="openBriefingModal()">${ICONS.briefing}</button>
-        <button class="btn icon-btn" title="Annulla ultima modifica" onclick="undoLast()">${ICONS.undo}</button>
-        <button class="btn icon-btn" title="Impostazioni" onclick="setTab('settings')">${ICONS.gear}</button>
-        <button class="btn icon-btn" title="Cambia tema" onclick="toggleTheme()">${state.settings.theme==='dark'?ICONS.sun:ICONS.moon}</button>
-        <button class="btn icon-btn" title="Stampa riepilogo" onclick="openPrintSummary()">${ICONS.print}</button>
+        <button class="btn icon-btn" title="Impostazioni" aria-label="Impostazioni" onclick="setTab('settings')">${ICONS.gear}</button>
       </div>
+    </div>
+    <div class="search-wrap" id="searchWrap">
+      <div class="search-box">${ICONS.search}<input id="searchInput" placeholder="Cerca ovunque…" oninput="onSearchInput(this.value)" onfocus="renderSearchDropdown()"><button class="mic-btn" id="searchMicBtn" title="Cerca a voce" onclick="startVoiceSearch()">${ICONS.mic}</button></div>
+      <div class="search-results" id="searchResults"></div>
     </div>
     <nav class="tabs">
       ${tabBtn('home','calendar','Panoramica')}
@@ -992,7 +1145,6 @@ function render(){
       ${tabBtn('calendar','calendar','Calendario')}
       ${tabBtn('wellness','droplet','Benessere')}
       ${tabBtn('admin','admin','Amministrazione')}
-      ${tabBtn('settings','gear','Impostazioni')}
     </nav>
     <div class="panel ${activeTab==='home'?'active':''}">${renderHome()}</div>
     <div class="panel ${activeTab==='health'?'active':''}">${renderHealth()}</div>
@@ -1130,7 +1282,7 @@ function renderHealth(){
       <div class="title-group">${sectionIcon('health','var(--c-salute)','var(--c-salute-soft)')}<h2>Salute</h2></div>
       <div style="display:flex; flex-direction:column;gap:8px;">
         <button class="btn subtle" onclick="openMedicalExport()">Esporta spese detraibili</button>
-        <button class="btn primary" onclick="openHealthForm()">+ Aggiungi voce</button>
+        <button class="btn primary" onclick="openHealthForm()">Aggiungi voce</button>
       </div>
     </div>
     ${items.length? items.map(h=>`
@@ -1156,7 +1308,7 @@ function renderHealth(){
       </div>`).join('') : `<div class="empty">Ancora nessuna voce. Aggiungi infortuni, visite o controlli.</div>`}
   </div>
   <div class="card">
-    <div class="card-head"><h2 style="font-size:16px;color:var(--ink-soft);">Farmacia</h2><button class="btn primary" onclick="openMedicineForm()">+ Aggiungi farmaco</button></div>
+    <div class="card-head"><h2 style="font-size:16px;color:var(--ink-soft);">Farmacia</h2><button class="btn primary" onclick="openMedicineForm()">Aggiungi farmaco</button></div>
     <div class="section-label">Tieni traccia dei farmaci a casa con una scadenza da monitorare (specie quelli cronici).</div>
     ${[...state.medicines].sort((a,b)=>(a.expiryDate||'').localeCompare(b.expiryDate||'')).map(m=>`
       <div class="item"><div class="item-top">
@@ -1320,7 +1472,7 @@ function renderHouse(){
     }).join('') : `<div class="empty">Nessuna bolletta registrata.</div>`}
   </div>
   <div class="card">
-    <div class="card-head"><h2 style="font-size:16px;color:var(--ink-soft);">Lavori da ultimare</h2><button class="btn primary" onclick="openTaskForm()">+ Aggiungi lavoro</button></div>
+    <div class="card-head"><h2 style="font-size:16px;color:var(--ink-soft);">Lavori da ultimare</h2><button class="btn primary" onclick="openTaskForm()">Aggiungi lavoro</button></div>
     <div class="section-label">Ordinati per priorità (alta prima). ${archivedTaskCount>0?`<button class="link-toggle" onclick="toggleArchivedTasks()">${showArchivedTasks?'Nascondi archiviati':`Mostra archiviati (${archivedTaskCount})`}</button>`:''}</div>
     ${tasks.length? tasks.map(t=>`
       <div class="item"><div class="item-top">
@@ -1333,7 +1485,7 @@ function renderHouse(){
       </div></div>`).join('') : `<div class="empty">Nessun lavoro in lista.</div>`}
   </div>
   <div class="card">
-    <div class="card-head"><h2 style="font-size:16px;color:var(--ink-soft);">Rate</h2><button class="btn primary" onclick="openInstForm()">+ Aggiungi rata</button></div>
+    <div class="card-head"><h2 style="font-size:16px;color:var(--ink-soft);">Rate</h2><button class="btn primary" onclick="openInstForm()">Aggiungi rata</button></div>
     ${inst.length? inst.map(i=>`
       <div class="item"><div class="item-top">
         <div><div class="item-title">${esc(i.title)}${i.autoPayment?'<span class="tag badge-good">Pagamento automatico</span>':''}</div>
@@ -1346,7 +1498,7 @@ function renderHouse(){
       </div></div>`).join('') : `<div class="empty">Nessuna rata in corso.</div>`}
   </div>
   <div class="card">
-    <div class="card-head"><div class="title-group">${sectionIcon('doc','var(--c-casa)','var(--c-casa-soft)')}<h2 style="font-size:16px;">Documenti della casa</h2></div><button class="btn primary" onclick="openDocForm()">+ Aggiungi documento</button></div>
+    <div class="card-head"><div class="title-group">${sectionIcon('doc','var(--c-casa)','var(--c-casa-soft)')}<h2 style="font-size:16px;">Documenti della casa</h2></div><button class="btn primary" onclick="openDocForm()">Aggiungi documento</button></div>
     <div class="section-label">Contratti, planimetrie, garanzie: tutto quello che vuoi avere sempre a portata di mano.</div>
     ${docs.length? docs.map(d=>`
       <div class="item"><div class="item-top">
@@ -1357,7 +1509,7 @@ function renderHouse(){
       </div>`).join('') : `<div class="empty">Nessun documento archiviato.</div>`}
   </div>
   <div class="card">
-    <div class="card-head"><h2 style="font-size:16px;color:var(--ink-soft);">Manutenzioni stagionali</h2><button class="btn primary" onclick="openSeasonalForm()">+ Aggiungi manutenzione</button></div>
+    <div class="card-head"><h2 style="font-size:16px;color:var(--ink-soft);">Manutenzioni stagionali</h2><button class="btn primary" onclick="openSeasonalForm()">Aggiungi manutenzione</button></div>
     <div class="section-label">Cose che vanno fatte una volta l'anno ma non hanno una data fissa — pulizia caldaia, grondaie, cambio gomme.</div>
     ${[...state.seasonalTasks].sort((a,b)=>a.month-b.month).map(s=>{
       const currentYear = new Date().getFullYear();
@@ -1837,7 +1989,7 @@ function renderSavings(){
     </div>
   </div>
   <div class="card">
-    <div class="card-head"><h2 style="font-size:16px;color:var(--ink-soft);">Budget mensile per categoria</h2><button class="btn small subtle" onclick="openBudgetForm()">+ Imposta budget</button></div>
+    <div class="card-head"><h2 style="font-size:16px;color:var(--ink-soft);">Budget mensile per categoria</h2><button class="btn small subtle" onclick="openBudgetForm()">Imposta budget</button></div>
     ${Object.keys(budgets).length? Object.entries(budgets).map(([cat,limit])=>{
       const spent = byCatThisMonth[cat]||0;
       const pct = limit>0 ? Math.min(100, Math.round((spent/limit)*100)) : 0;
@@ -1857,7 +2009,7 @@ function renderSavings(){
         <label class="btn small subtle" style="display:inline-flex;align-items:center;">📷 Scontrino<input type="file" accept="application/pdf,image/*" style="display:none" onchange="importReceiptFromFile(this)"></label>
         <label class="btn small subtle" style="display:inline-flex;align-items:center;">Importa CSV<input type="file" accept=".csv" style="display:none" onchange="importExpensesCSV(this)"></label>
         <label class="btn small subtle" style="display:inline-flex;align-items:center;">Confronta estratto conto<input type="file" accept=".csv" style="display:none" onchange="reconcileBankCSV(this)"></label>
-        <button class="btn primary" onclick="openExpenseForm()">+ Aggiungi spesa</button>
+        <button class="btn primary" onclick="openExpenseForm()">Aggiungi spesa</button>
       </div>
     </div>
     <div class="section-label">Salute, lavori in casa, auto entrano qui quando compili il costo. Bollette e rate entrano quando premi "Segna pagata". Il CSV deve avere colonne Data;Titolo;Categoria;Importo (come nell'export spese mediche). "Scontrino" prova a leggere una foto/PDF; "Confronta estratto conto" legge un CSV esportato dalla tua banca e verifica cosa manca.</div>
@@ -2015,7 +2167,7 @@ function renderCars(){
   const visibleCars = state.cars.filter(c=> showArchivedCars ? true : !c.archived);
   return `
   <div class="card">
-    <div class="card-head"><div class="title-group">${sectionIcon('car','var(--c-auto)','var(--c-auto-soft)')}<h2>Le mie auto</h2></div><button class="btn primary" onclick="openCarForm()">+ Aggiungi auto</button></div>
+    <div class="card-head"><div class="title-group">${sectionIcon('car','var(--c-auto)','var(--c-auto-soft)')}<h2>Le mie auto</h2></div><button class="btn primary" onclick="openCarForm()">Aggiungi auto</button></div>
     ${archivedCount>0?`<div class="section-label"><button class="link-toggle" onclick="toggleArchivedCars()">${showArchivedCars?'Nascondi archiviate':`Mostra archiviate (${archivedCount})`}</button></div>`:''}
     ${visibleCars.length? visibleCars.map(c=>{
       const evts = state.carEvents.filter(e=>e.carId===c.id).sort((a,b)=>(b.date||'').localeCompare(a.date||''));
@@ -2211,7 +2363,7 @@ function renderCalendarWeek(){
         return `<div class="week-day ${isToday?'today':''}">
           <div class="week-day-head">${DOW[(d.getDay()+6)%7]} <span>${d.getDate()}</span></div>
           <div class="week-day-body">
-            ${evts.length? evts.map(e=>`<div class="cal-evt" style="margin-bottom:4px;cursor:pointer;background:${eventColor(e)};" onclick="openWeekDay(${d.getFullYear()},${d.getMonth()},${d.getDate()})">${e.time?esc(e.time)+' · ':''}${esc(e.title)}</div>`).join('') : `<div class="empty" style="padding:8px 2px;font-size:11.5px;cursor:pointer;" onclick="openWeekDay(${d.getFullYear()},${d.getMonth()},${d.getDate()})">+ aggiungi</div>`}
+            ${evts.length? evts.map(e=>`<div class="cal-evt" style="margin-bottom:4px;cursor:pointer;background:${eventColor(e)};" onclick="openWeekDay(${d.getFullYear()},${d.getMonth()},${d.getDate()})">${e.time?esc(e.time)+' · ':''}${esc(e.title)}</div>`).join('') : `<div class="empty" style="padding:8px 2px;font-size:11.5px;cursor:pointer;" onclick="openWeekDay(${d.getFullYear()},${d.getMonth()},${d.getDate()})">aggiungi</div>`}
           </div>
         </div>`;
       }).join('')}
@@ -2238,7 +2390,7 @@ function renderSidebar(){
   const evts = eventsOnDate(y, m-1, d).sort((a,b)=>(a.time||'').localeCompare(b.time||''));
   document.getElementById('sidebar').innerHTML = `
     <div class="sidebar-head"><h3>${selectedDay} ${MONTHS[m-1]}</h3><button class="btn small ghost" onclick="closeSidebar()">Chiudi</button></div>
-    <button class="btn primary" style="width:100%;margin-bottom:14px;" onclick="closeSidebar(); openEventForm(null,'${ds}')">+ Aggiungi impegno</button>
+    <button class="btn primary" style="width:100%;margin-bottom:14px;" onclick="closeSidebar(); openEventForm(null,'${ds}')">Aggiungi impegno</button>
     ${evts.length? evts.map(e=>`
       <div class="item">
         <div class="item-top">
@@ -2384,7 +2536,7 @@ function renderWellness(){
   const notifGranted = notifGrantedCache;
   return `
   <div class="card">
-    <div class="card-head"><div class="title-group">${sectionIcon('droplet','var(--c-salute)','var(--c-salute-soft)')}<h2>Benessere</h2></div><button class="btn primary" onclick="openRoutineForm()">+ Aggiungi routine</button></div>
+    <div class="card-head"><div class="title-group">${sectionIcon('droplet','var(--c-salute)','var(--c-salute-soft)')}<h2>Benessere</h2></div><button class="btn primary" onclick="openRoutineForm()">Aggiungi routine</button></div>
     <div class="section-label">Promemoria per bere acqua, meditare, muoverti o qualsiasi altra piccola abitudine. ${isNativeApp() ? 'Le notifiche vengono programmate sul telefono e arrivano anche ad app chiusa. Riapri l’app ogni tanto per mantenere aggiornata la programmazione.' : 'Nel browser i promemoria funzionano finché tieni questa pagina aperta; nell’app per telefono arrivano anche ad app chiusa.'}</div>
     ${notifSupported && !notifGranted ? `<div class="notice">Attiva le notifiche per ricevere i promemoria. <button class="btn small subtle" style="margin-left:8px;" onclick="requestWellnessNotifications()">Attiva notifiche</button></div>` : ''}
     ${routines.length? routines.map(r=>{
@@ -2550,7 +2702,7 @@ function renderAdmin(){
   const contacts = [...state.contacts].sort((a,b)=>a.name.localeCompare(b.name));
   return `
   <div class="card">
-    <div class="card-head"><div class="title-group">${sectionIcon('doc','var(--c-calendario)','var(--c-calendario-soft)')}<h2>Documenti personali</h2></div><button class="btn primary" onclick="openPersonalDocForm()">+ Aggiungi documento</button></div>
+    <div class="card-head"><div class="title-group">${sectionIcon('doc','var(--c-calendario)','var(--c-calendario-soft)')}<h2>Documenti personali</h2></div><button class="btn primary" onclick="openPersonalDocForm()">Aggiungi documento</button></div>
     <div class="section-label">Carta d'identità, passaporto, patente: le scadenze appaiono anche in Panoramica e nel Calendario.</div>
     ${docs.length? docs.map(p=>`
       <div class="item"><div class="item-top">
@@ -2561,15 +2713,15 @@ function renderAdmin(){
       </div>`).join('') : `<div class="empty">Nessun documento personale archiviato.</div>`}
   </div>
   <div class="card">
-    <div class="card-head"><h2 style="font-size:16px;color:var(--ink-soft);">Rubrica contatti utili</h2><button class="btn primary" onclick="openContactForm()">+ Aggiungi contatto</button></div>
+    <div class="card-head"><h2 style="font-size:16px;color:var(--ink-soft);">Rubrica contatti utili</h2><button class="btn primary" onclick="openContactForm()">Aggiungi contatto</button></div>
     ${contacts.length? contacts.map(c=>`
       <div class="item"><div class="item-top">
-        <div><span class="tag">${esc(c.category)}</span><div class="item-title">${esc(c.name)}</div>${c.phone?`<div class="item-meta">📞 ${esc(c.phone)}</div>`:''}${c.note?`<div class="item-desc">${esc(c.note)}</div>`:''}</div>
+        <div><span class="tag">${esc(c.category)}</span><div class="item-title">${esc(c.name)}</div>${c.phone?`<div class="item-meta"><a class="tel-link" href="tel:${esc(c.phone.replace(/[^\d+]/g,''))}">📞 ${esc(c.phone)}</a></div>`:''}${c.note?`<div class="item-desc">${esc(c.note)}</div>`:''}</div>
         <div class="item-actions"><button class="btn small ghost" onclick="openContactForm('${c.id}')">Modifica</button><button class="btn small danger ghost" onclick="confirmDelete('Eliminare questo contatto?', ()=>deleteContact('${c.id}'))">Elimina</button></div>
       </div></div>`).join('') : `<div class="empty">Nessun contatto salvato.</div>`}
   </div>
   <div class="card">
-    <div class="card-head"><h2 style="font-size:16px;color:var(--ink-soft);">Beni importanti</h2><button class="btn primary" onclick="openAssetForm()">+ Aggiungi bene</button></div>
+    <div class="card-head"><h2 style="font-size:16px;color:var(--ink-soft);">Beni importanti</h2><button class="btn primary" onclick="openAssetForm()">Aggiungi bene</button></div>
     <div class="section-label">Elettrodomestici, mobili o altri acquisti importanti. Il costo totale somma il prezzo d'acquisto e le spese del Salvadanaio che hanno la stessa etichetta.</div>
     ${state.assets.length? state.assets.map(a=>{
       const linked = state.expenses.filter(e=>(e.tags||[]).includes(a.name));
@@ -2760,12 +2912,27 @@ function renderSettings(){
     </div>
   </div>
   <div class="card">
+    <div class="card-head"><h2 style="font-size:16px;">Strumenti</h2></div>
+    <div class="section-label">Scorciatoie spostate qui dall'intestazione, per lasciarla più leggera.</div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;">
+      <button class="btn subtle" onclick="undoLast()">${ICONS.undo} Annulla ultima modifica</button>
+      <button class="btn subtle" onclick="openPrintSummary()">${ICONS.print} Stampa riepilogo</button>
+    </div>
+  </div>
+  <div class="card">
     <div class="card-head"><h2 style="font-size:16px;">Aspetto</h2></div>
     <div class="field"><label>Tema</label>
-      <select id="set_theme" onchange="quickSetTheme(this.value)">
-        <option value="light" ${state.settings.theme==='light'?'selected':''}>Chiaro</option>
-        <option value="dark" ${state.settings.theme==='dark'?'selected':''}>Scuro</option>
-      </select>
+      <div class="theme-grid">
+        ${THEMES.map(t=>`
+          <button class="theme-swatch ${state.settings.theme===t.id?'active':''}" onclick="selectTheme('${t.id}')" title="${esc(t.desc)}">
+            <span class="theme-swatch-preview" style="background:${t.vars.paper};border-color:${t.vars.line};">
+              <span style="background:${t.vars.card};border-color:${t.vars.line};"></span>
+              <span style="background:${t.vars.primary};"></span>
+              <span style="background:${t.vars['c-casa']};"></span>
+            </span>
+            <span class="theme-swatch-label">${t.mode==='dark'?'🌙':'☀️'} ${esc(t.label)}</span>
+          </button>`).join('')}
+      </div>
     </div>
   </div>
   <div class="card">
@@ -2779,6 +2946,7 @@ function renderSettings(){
     </div>
   </div>
   ${renderNotificationsCard()}
+  ${renderTipsCard()}
   <div class="card">
     <div class="card-head"><h2 style="font-size:16px;">Calendario</h2></div>
     <div style="display:flex;gap:8px;flex-wrap:wrap;">
@@ -2815,19 +2983,21 @@ function renderSettings(){
 }
 
 // ---------- STAMPA RIEPILOGO ----------
-function openPrintSummary(){
+// ---------- riepilogo stampabile ----------
+// Anteprima dentro l'app: niente window.open/browser esterno, quindi niente "porta senza ritorno".
+// Stampa vera: sul telefono usa il plugin nativo (cerca da solo le stampanti sulla stessa rete Wi-Fi,
+// via AirPrint su iOS e il framework di stampa di Android); nel browser stampa questa stessa pagina.
+const PRINT_CSS = `
+  .print-preview-scroll{font-family:Georgia,serif;color:#051923;max-width:700px;margin:0 auto;padding:20px;}
+  .print-preview-scroll h1{font-size:24px;margin-bottom:4px;}
+  .print-preview-scroll h2{font-size:16px;border-bottom:1px solid #ccc;padding-bottom:6px;margin-top:28px;}
+  .print-preview-scroll .row{display:flex;justify-content:space-between;gap:10px;padding:6px 0;border-bottom:1px solid #eee;font-size:13.5px;}
+  .print-preview-scroll .muted{color:#888;font-size:11.5px;}
+`;
+function buildPrintSummaryHtml(){
   const upcoming = collectUpcoming().slice(0,20);
   const total = state.expenses.reduce((s,e)=>s+e.amount,0);
-  const win = window.open('', '_blank');
-  if(!win){ alert('Il browser ha bloccato la finestra di stampa. Consenti i popup per questa pagina.'); return; }
-  win.document.write(`
-    <html><head><title>Riepilogo — Il mio taccuino</title>
-    <style>
-      body{font-family:Georgia,serif;color:#051923;max-width:700px;margin:40px auto;padding:0 20px;}
-      h1{font-size:24px;margin-bottom:4px;} h2{font-size:16px;border-bottom:1px solid #ccc;padding-bottom:6px;margin-top:28px;}
-      .row{display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #eee;font-size:13.5px;}
-      .muted{color:#888;font-size:11.5px;}
-    </style></head><body>
+  return `
     <h1>U-Life — riepilogo</h1>
     <div class="muted">Generato il ${fmtD(todayStr())}</div>
     <h2>Indirizzo</h2>
@@ -2842,10 +3012,38 @@ function openPrintSummary(){
     ${state.cars.map(c=>`<div class="row"><span>${esc(c.name)} ${c.plate?('· '+esc(c.plate)):''}</span><span>${c.km?Number(c.km).toLocaleString('it-IT')+' km':''}</span></div>`).join('') || '<div class="muted">Nessuna auto.</div>'}
     <h2>Spese totali</h2>
     <div class="row"><span>Totale registrato</span><span><strong>${euro(total)}</strong></span></div>
-    </body></html>
-  `);
-  win.document.close();
-  setTimeout(()=>win.print(), 400);
+  `;
+}
+function openPrintSummary(){
+  window._printSummaryHtml = buildPrintSummaryHtml();
+  closePrintPreview();
+  const extraBottom = adsBannerShown ? 64 : 0;   // spazio per non finire sotto il banner pubblicitario
+  const el = document.createElement('div');
+  el.id = 'printPreview';
+  el.innerHTML = `
+    <div class="print-preview-head"><strong>Anteprima di stampa</strong></div>
+    <style>${PRINT_CSS}</style>
+    <div class="print-preview-scroll">${window._printSummaryHtml}</div>
+    <div class="print-preview-bar" style="padding-bottom:calc(14px + env(safe-area-inset-bottom) + ${extraBottom}px);">
+      <button class="btn subtle" onclick="closePrintPreview()">← Indietro</button>
+      <button class="btn primary" onclick="printCurrentSummary()">🖨️ Stampa</button>
+    </div>`;
+  document.body.appendChild(el);
+}
+function closePrintPreview(){ const el = document.getElementById('printPreview'); if(el) el.remove(); }
+async function printCurrentSummary(){
+  const html = window._printSummaryHtml || '';
+  if(isNativeApp()){
+    const P = window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.Printer;
+    if(!P){ toast('Stampa non disponibile: nell’app manca ancora il plugin di stampa.'); return; }
+    try{
+      await P.printHtml({ name:'Riepilogo U-Life', html:`<html><head><meta charset="utf-8"><style>${PRINT_CSS.replace(/\.print-preview-scroll/g,'body')}</style></head><body>${html}</body></html>` });
+    }catch(e){
+      if(!(e && /cancel/i.test(e.message||''))) toast('Stampa non riuscita: '+((e&&e.message)||'errore'));
+    }
+    return;
+  }
+  window.print();   // browser: stampa questa stessa pagina (l'anteprima è isolata dal resto via @media print in style.css)
 }
 
 // ============================================================
@@ -2911,7 +3109,7 @@ function renderIncomesCard(){
   const list = [...(state.incomes||[])].sort((a,b)=>((a.recur==='monthly')?0:1)-((b.recur==='monthly')?0:1) || (b.date||'').localeCompare(a.date||''));
   return `
   <div class="card">
-    <div class="card-head"><div class="title-group">${sectionIcon('piggy','var(--c-salvadanaio)','var(--c-salvadanaio-soft)')}<h2>Entrate</h2></div><button class="btn primary" onclick="openIncomeForm()">+ Aggiungi entrata</button></div>
+    <div class="card-head"><div class="title-group">${sectionIcon('piggy','var(--c-salvadanaio)','var(--c-salvadanaio-soft)')}<h2>Entrate</h2></div><button class="btn primary" onclick="openIncomeForm()">Aggiungi entrata</button></div>
     <div class="section-label">Stipendio, pensione o un accredito una tantum. Le entrate ricorrenti si ripetono ogni mese alla stessa data e vengono sommate ai grafici insieme alle spese, così vedi il saldo mensile.</div>
     ${list.length? list.map(i=>`
       <div class="item"><div class="item-top">
@@ -3435,6 +3633,7 @@ async function confirmDeleteAccount(){
     toast('Elimino l’account…');
     await taccuinoDB.deleteMyAccount();
     clearLocalCaches();
+    forgetDeviceCredential();   // l'account non esiste più: niente più senso a tenere l'accesso rapido
     try{ localStorage.removeItem(AI_CONFIG_KEY); }catch(e){}
     unlocked = false; location.reload();
   }catch(e){ toast('Non sono riuscito a eliminare l’account: '+(e.message||'errore')+' (hai eseguito migration-v2.sql?)'); }
@@ -3467,6 +3666,167 @@ async function onAppReady(){
   checkAIStatus();
   refreshNotifPermission().then(()=>{ scheduleNotificationsSoon(); if(unlocked) render(); });
   refreshPlan(false).then(()=>{ syncAds(); if(unlocked) render(); });
+  maybeShowDailyTipSoon();
+}
+
+// ============================================================
+// ASSISTENTE: un suggerimento al giorno, per scoprire le funzioni dell'app
+// ============================================================
+// Non è una vera GIF animata di un assistente — genero io un avatar animato via CSS/SVG,
+// leggero e già pronto, senza bisogno di scaricare o includere alcun file. Se in futuro vuoi
+// usare una tua GIF o animazione, basta cambiare cosa restituisce assistantAvatarHTML() qui sotto,
+// ad esempio con <img src="assets/assistant.gif" alt="">.
+function assistantAvatarHTML(){
+  return `<div class="tip-avatar-face">
+    <svg viewBox="0 0 64 64" width="50" height="50" aria-hidden="true">
+      <circle cx="32" cy="32" r="30" fill="var(--primary)"/>
+      <circle class="tip-eye" cx="23" cy="29" r="4" fill="#fff"/>
+      <circle class="tip-eye" cx="41" cy="29" r="4" fill="#fff"/>
+      <path d="M20 40 Q32 49 44 40" stroke="#fff" stroke-width="3" fill="none" stroke-linecap="round"/>
+    </svg>
+    <div class="tip-hand">👋</div>
+  </div>`;
+}
+
+const TIP_LAST_SHOWN_KEY = 'taccuino-tip-last-shown';   // 'YYYY-MM-DD': l'ultimo giorno in cui è comparso su questo dispositivo
+const TIP_SNOOZE_KEY = 'taccuino-tip-snooze-until';      // 'YYYY-MM-DD', oppure 'forever'
+const TIP_LAST_INDEX_KEY = 'taccuino-tip-last-index';    // per non riproporre sempre lo stesso suggerimento
+
+// Ogni voce: quando proporla (test), cosa dire, e cosa fare se l'utente accetta (dove va, quale modulo apre).
+const DAILY_TIPS = [
+  { id:'car', test:()=> state.cars.length===0,
+    message:'Non hai ancora registrato nessuna auto. Vuoi aggiungerne una? Potrai tenere traccia di manutenzioni e scadenze.',
+    cta:'Aggiungi auto', go:()=>{ setTab('cars'); openCarForm(); } },
+  { id:'income', test:()=> (state.incomes||[]).length===0,
+    message:'Non hai ancora registrato entrate. Vuoi aggiungere stipendio o pensione? Vedrai subito il saldo tra entrate e uscite.',
+    cta:'Aggiungi entrata', go:()=>{ setTab('savings'); openIncomeForm(); } },
+  { id:'contact', test:()=> state.contacts.length===0,
+    message:'La rubrica dei contatti utili è vuota. Vuoi salvare un numero importante, come il medico di famiglia?',
+    cta:'Aggiungi contatto', go:()=>{ setTab('admin'); openContactForm(); } },
+  { id:'routine', test:()=> ((state.wellness||{}).routines||[]).length===0,
+    message:'Non hai ancora nessuna routine di benessere. Vuoi impostare un promemoria, ad esempio per bere acqua?',
+    cta:'Aggiungi routine', go:()=>{ setTab('wellness'); openRoutineForm(); } },
+  { id:'homeTask', test:()=> state.homeTasks.length===0,
+    message:'La lista dei lavori di casa è vuota. Vuoi aggiungere qualcosa da sistemare?',
+    cta:'Aggiungi lavoro', go:()=>{ setTab('house'); openTaskForm(); } },
+  { id:'medicine', test:()=> hasHealthConsent() && state.medicines.length===0,
+    message:'Non hai ancora registrato farmaci. Vuoi tenere traccia di una scadenza o di un promemoria?',
+    cta:'Aggiungi farmaco', go:()=>{ setTab('health'); openMedicineForm(); } },
+  { id:'asset', test:()=> state.assets.length===0,
+    message:'Non hai ancora registrato beni di valore. Vuoi aggiungerne uno, per tenerne traccia nel tempo?',
+    cta:'Aggiungi bene', go:()=>{ setTab('admin'); openAssetForm(); } },
+  { id:'personalDoc', test:()=> state.personalDocs.length===0,
+    message:'Non hai ancora salvato documenti personali (carta d’identità, patente...). Vuoi aggiungerne uno?',
+    cta:'Aggiungi documento', go:()=>{ setTab('admin'); openPersonalDocForm(); } },
+  { id:'homeDocument', test:()=> state.homeDocuments.length===0,
+    message:'Non hai ancora salvato documenti di casa (contratti, garanzie...). Vuoi aggiungerne uno?',
+    cta:'Aggiungi documento', go:()=>{ setTab('house'); openDocForm(); } },
+  { id:'seasonalTask', test:()=> state.seasonalTasks.length===0,
+    message:'Non hai lavori stagionali in programma (es. tagliando caldaia, cambio gomme...). Vuoi aggiungerne uno?',
+    cta:'Aggiungi voce', go:()=>{ setTab('house'); openSeasonalForm(); } },
+  { id:'budget', test:()=> Object.keys((state.settings||{}).budgets||{}).length===0,
+    message:'Non hai ancora impostato un budget per le spese. Vuoi definirne uno per tenere sotto controllo una categoria?',
+    cta:'Imposta budget', go:()=>{ setTab('savings'); openBudgetForm(); } },
+];
+
+function eligibleDailyTips(){
+  return DAILY_TIPS.filter(t=>{ try{ return t.test(); }catch(e){ return false; } });
+}
+function tipSnoozeUntil(){
+  try{ return localStorage.getItem(TIP_SNOOZE_KEY); }catch(e){ return null; }
+}
+function tipSnoozed(){
+  const until = tipSnoozeUntil();
+  if(!until) return false;
+  if(until==='forever') return true;
+  return until >= todayStr();
+}
+function maybeShowDailyTip(){
+  if(tipSnoozed()) return;
+  let lastShown = null; try{ lastShown = localStorage.getItem(TIP_LAST_SHOWN_KEY); }catch(e){}
+  if(lastShown===todayStr()) return;
+  const eligible = eligibleDailyTips();
+  if(!eligible.length) return;
+  let idx = 0; try{ idx = (Number(localStorage.getItem(TIP_LAST_INDEX_KEY))||0) + 1; }catch(e){}
+  const tip = eligible[idx % eligible.length];
+  try{ localStorage.setItem(TIP_LAST_INDEX_KEY, String(idx)); }catch(e){}
+  showDailyTip(tip);
+}
+// Aspetta che onboarding/consenso/briefing (che usano la stessa modale a schermo intero) siano chiusi,
+// per non sovrapporre due cose insieme al primo avvio.
+function maybeShowDailyTipSoon(){
+  const tryShow = () => {
+    const overlay = document.getElementById('overlay');
+    if(overlay && overlay.classList.contains('active')){ setTimeout(tryShow, 2000); return; }
+    maybeShowDailyTip();
+  };
+  setTimeout(tryShow, 3500);
+}
+function showDailyTip(tip){
+  closeDailyTip();
+  try{ localStorage.setItem(TIP_LAST_SHOWN_KEY, todayStr()); }catch(e){}
+  window._currentDailyTip = tip;
+  const el = document.createElement('div');
+  el.id = 'dailyTip';
+  el.style.setProperty('--tip-extra-bottom', adsBannerShown ? '64px' : '0px');   // spazio per il banner pubblicitario, se attivo
+  el.innerHTML = `
+    <button class="daily-tip-close" onclick="closeDailyTip()" aria-label="Chiudi">✕</button>
+    <div class="daily-tip-avatar">${assistantAvatarHTML()}</div>
+    <div class="daily-tip-bubble">
+      <div class="daily-tip-text">${esc(tip.message)}</div>
+      <div class="daily-tip-actions">
+        <button class="btn subtle small" onclick="closeDailyTip()">Non ora</button>
+        <button class="btn primary small" onclick="acceptDailyTip()">${esc(tip.cta)}</button>
+      </div>
+    </div>`;
+  document.body.appendChild(el);
+  requestAnimationFrame(()=>{ const e2=document.getElementById('dailyTip'); if(e2) e2.classList.add('show'); });
+}
+function closeDailyTip(){
+  const el = document.getElementById('dailyTip');
+  if(el){ el.classList.remove('show'); setTimeout(()=>{ if(el.parentNode) el.remove(); }, 250); }
+  window._currentDailyTip = null;
+}
+function acceptDailyTip(){
+  const tip = window._currentDailyTip;
+  closeDailyTip();
+  if(tip && tip.go) tip.go();
+}
+// period: 'week' | 'month' | 'forever' | null (per riattivare subito)
+function snoozeDailyTip(period){
+  if(!period){
+    try{ localStorage.removeItem(TIP_SNOOZE_KEY); }catch(e){}
+    toast('Suggerimenti riattivati.');
+  } else if(period==='forever'){
+    try{ localStorage.setItem(TIP_SNOOZE_KEY,'forever'); }catch(e){}
+    closeDailyTip();
+    toast('Suggerimenti disattivati. Puoi riattivarli quando vuoi da qui.');
+  } else {
+    const days = period==='week' ? 7 : 30;
+    const until = isoLocal(new Date(Date.now()+days*86400000));
+    try{ localStorage.setItem(TIP_SNOOZE_KEY, until); }catch(e){}
+    closeDailyTip();
+    toast('Suggerimenti in pausa fino al '+fmtD(until)+'.');
+  }
+  if(unlocked) render();
+}
+function renderTipsCard(){
+  const until = tipSnoozeUntil();
+  let status;
+  if(until==='forever') status = 'Disattivati.';
+  else if(until && until>=todayStr()) status = 'In pausa fino al '+fmtD(until)+'.';
+  else status = 'Attivi: al massimo uno al giorno.';
+  return `
+  <div class="card">
+    <div class="card-head"><h2 style="font-size:16px;">Suggerimenti</h2></div>
+    <div class="section-label">Un piccolo assistente che, al massimo una volta al giorno, propone un'azione utile in base a cosa non hai ancora usato (per esempio registrare un'auto o un'entrata). ${esc(status)}</div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;">
+      <button class="btn subtle" onclick="snoozeDailyTip('week')">Pausa 1 settimana</button>
+      <button class="btn subtle" onclick="snoozeDailyTip('month')">Pausa 1 mese</button>
+      <button class="btn subtle" onclick="snoozeDailyTip('forever')">Disattiva per sempre</button>
+      ${until?`<button class="btn primary" onclick="snoozeDailyTip(null)">Riattiva ora</button>`:''}
+    </div>
+  </div>`;
 }
 
 // ---------- helpers ----------
