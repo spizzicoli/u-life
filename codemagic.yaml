@@ -15,15 +15,15 @@ workflows:
         script: |
           npx cap sync ios
 
-      - name: Build iOS
+      - name: Build iOS Simulator
         script: |
           cd ios
           xcodebuild \
             -workspace App/App.xcworkspace \
             -scheme App \
             -configuration Debug \
-            -sdk iphoneos \
+            -sdk iphonesimulator \
             -derivedDataPath build
 
     artifacts:
-      - ios/build/Build/Products/Debug-iphoneos/*.app
+      - ios/build/Build/Products/Debug-iphonesimulator/*.app
