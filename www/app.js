@@ -2919,19 +2919,19 @@ function renderSettings(){
   <div class="card">
     <div class="card-head"><div class="title-group">${sectionIcon('admin','var(--primary)','var(--c-calendario-soft)')}<h2>Account</h2></div></div>
     <div class="section-label">Il tuo accesso è protetto dalla tua email e password. Se in famiglia siete in più persone, ognuno dovrebbe creare il proprio account invece di condividere questo — i dati restano separati e privati per ciascuno.</div>
-    <button class="btn subtle" onclick="logout()">Esci dall'account</button>
+    <button class="btn subtle" style="width:100%" onclick="logout()">Esci dall'account</button>
   </div>
   ${renderPlanCard()}
   <div class="card">
     <div class="card-head"><h2 style="font-size:16px;">Nucleo familiare</h2></div>
     <div class="section-label">Condividi il taccuino con una persona di fiducia. Entrambi dovete usare account separati; dopo l'unione vedrete gli stessi dati. Aggiungere un familiare richiede il piano Premium; unirsi all’invito di un altro utente è gratuito.</div>
-    <div style="display:flex;gap:8px;flex-wrap:wrap;"><button class="btn primary" onclick="showFamilyInvite()">Aggiungi familiare ${planHas('family')?'':'<span class="tag pro-lock">🔒 PREMIUM</span>'}</button><button class="btn subtle" onclick="showJoinFamily()">Unisciti a una famiglia</button></div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;"><button class="btn primary" style="width: 100%;" onclick="showFamilyInvite()">Aggiungi familiare ${planHas('family')?'':'<span class="tag pro-lock">🔒 PREMIUM</span>'}</button><button class="btn subtle" style="width: 100%;" onclick="showJoinFamily()">Unisciti a una famiglia</button></div>
   </div>
   <div class="card">
     <div class="card-head"><h2 style="font-size:16px;">Assistente AI</h2><span class="tag" ${aiAvailable?'style="background:var(--c-salute-soft);color:var(--c-salute);border-color:transparent;"':''}>${aiAvailable?'Attivo':'🔒 PREMIUM'}</span></div>
     ${aiAvailable
       ? `<div class="section-label">Usa il robot in basso a destra per fare domande sui tuoi dati (spese, bollette, auto, scadenze) o scrivi una frase nell’aggiunta rapida della Panoramica. Le domande passano dai nostri server verso il servizio AI: non serve alcuna chiave. I dati sanitari non vengono mai inviati. C’è un limite giornaliero di richieste.</div>`
-      : `<div class="notice">🔒 PREMIUM · L’assistente AI è incluso nel piano Premium. <button class="btn small primary" style="margin-left:8px;" onclick="openPaywall('🔒 PREMIUM · L’assistente AI è incluso nel piano Premium.')">Scopri Premium</button></div>`}
+      : `<div class="notice">🔒 PREMIUM · L’assistente AI è incluso nel piano Premium. <button class="btn primary" style="margin-left:8px;" onclick="openPaywall('🔒 PREMIUM · L’assistente AI è incluso nel piano Premium.')">Scopri Premium</button></div>`}
   </div>
   <div class="card">
     <div class="card-head"><h2 style="font-size:16px;">Blocco rapido</h2></div>
@@ -2956,8 +2956,8 @@ function renderSettings(){
     <div class="card-head"><h2 style="font-size:16px;">Strumenti</h2></div>
     <div class="section-label">Scorciatoie spostate qui dall'intestazione, per lasciarla più leggera.</div>
     <div style="display:flex;gap:8px;flex-wrap:wrap;">
-      <button class="btn subtle" onclick="undoLast()">${ICONS.undo} Annulla ultima modifica</button>
-      <button class="btn subtle" onclick="openPrintSummary()">${ICONS.print} Stampa riepilogo</button>
+      <button class="btn subtle" style="width: 100%;" onclick="undoLast()">${ICONS.undo} Annulla ultima modifica</button>
+      <button class="btn subtle" style="width: 100%;" onclick="openPrintSummary()">${ICONS.print} Stampa riepilogo</button>
     </div>
   </div>
   <div class="card">
@@ -2991,8 +2991,8 @@ function renderSettings(){
   <div class="card">
     <div class="card-head"><h2 style="font-size:16px;">Calendario</h2></div>
     <div style="display:flex;gap:8px;flex-wrap:wrap;">
-      <button class="btn subtle" onclick="exportICS()">Esporta calendario (.ics)</button>
-      <label class="btn subtle" style="display:inline-flex;align-items:center;">Importa calendario (.ics)<input type="file" accept=".ics" style="display:none" onchange="importICS(this)"></label>
+      <button style="width: 100%;" class="btn subtle" onclick="exportICS()">Esporta calendario (.ics)</button>
+      <label style="width: 100%;" class="btn subtle" style="display:inline-flex;align-items:center;">Importa calendario (.ics)<input type="file" accept=".ics" style="display:none" onchange="importICS(this)"></label>
     </div>
     <div class="section-label" style="margin-top:8px;">Esporta per vedere i tuoi impegni su Google/Apple Calendar dal telefono, oppure importa un calendario esistente.</div>
   </div>
@@ -3000,7 +3000,7 @@ function renderSettings(){
     <div class="card-head"><h2 style="font-size:16px;">Cloud</h2></div>
     <div class="settings-section-title">Sincronizzazione</div>
     <div class="section-label">I tuoi dati vivono su Supabase, non su questo telefono: li ritrovi automaticamente se accedi da un altro dispositivo con lo stesso account. ${syncStatusText()}</div>
-    <button class="btn subtle" onclick="forceRefresh()">Aggiorna dati ora</button>
+    <button class="btn subtle" style="width: 100%;" onclick="forceRefresh()">Aggiorna dati ora</button>
   </div>
   ${renderPrivacyCard()}
   <div class="card">
@@ -3342,8 +3342,8 @@ function renderNotificationsCard(){
     <div class="field-row">
       <div class="field"><label>Giorni di anticipo</label><input type="number" min="1" max="60" id="set_reminderDays" value="${state.settings.reminderDaysAhead}" onchange="quickUpdateSetting('reminderDaysAhead', Math.max(1,Number(this.value)||3))"></div>
     </div>
-    <div class="field-row">
-      <div class="field"><label>Orario delle notifiche di scadenza</label><input type="time" id="set_notifTime" value="${pad2(t.h)}:${pad2(t.m)}" onchange="setNotifTime(this.value)"></div>
+    <div class="field-row" style="width: 100%;">
+      <div class="field" style="max-width: 100%;"><label>Orario delle notifiche di scadenza</label><input type="time" id="set_notifTime" value="${pad2(t.h)}:${pad2(t.m)}" onchange="setNotifTime(this.value)"></div>
     </div>
     <div class="field"><label style="display:flex;gap:10px;align-items:center;cursor:pointer;"><input type="checkbox" ${notifPrivate()?'checked':''} onchange="setNotifPrivacy(this.checked)" style="width:20px;height:20px;"> Nascondi i dettagli nel testo delle notifiche (consigliato: compaiono sulla schermata di blocco)</label></div>
     <div style="display:flex;gap:8px;flex-wrap:wrap;">
@@ -3558,9 +3558,9 @@ function renderPlanCard(){
   <div class="card">
     <div class="card-head"><h2 style="font-size:16px;">Il tuo piano</h2><span class="tag">${def.label}</span></div>
     <div class="section-label">${txt}</div>
-    <div style="display:flex;gap:8px;flex-wrap:wrap;">
-      <button class="btn primary" onclick="openPaywall()">${currentPlan==='premium'?'Dettagli piano':'Scopri i piani'}</button>
-      <button class="btn subtle" onclick="restorePurchases()">Ripristina acquisti</button>
+    <div style="display:flex;flex-direction:column;gap:8px;flex-wrap:wrap;">
+      <button class="btn primary" style="width: 100%;" onclick="openPaywall()">${currentPlan==='premium'?'Dettagli piano':'Scopri i piani'}</button>
+      <button class="btn subtle" style="width: 100%;" onclick="restorePurchases()">Ripristina acquisti</button>
       ${planHas('support')?`<a class="btn subtle" href="mailto:${SUPPORT_EMAIL_PREMIUM}">Assistenza dedicata</a>`:''}
     </div>
   </div>`;
@@ -3685,12 +3685,12 @@ function renderPrivacyCard(){
     <div class="card-head"><h2 style="font-size:16px;">Privacy e dati</h2></div>
     <div class="section-label">I tuoi dati sono tuoi: puoi rileggere l’informativa, portarli via o cancellarli quando vuoi.</div>
     <div class="field"><label style="display:flex;gap:10px;align-items:center;cursor:pointer;"><input type="checkbox" ${hasHealthConsent()?'checked':''} onchange="toggleHealthConsent(this.checked)" style="width:20px;height:20px;"> Consenso al trattamento dei dati sulla salute (sezione Salute e Farmaci)</label></div>
-    <div style="display:flex;gap:8px;flex-wrap:wrap;">
-      <a class="btn subtle" href="${PRIVACY_URL}" target="_blank" rel="noopener">Informativa Privacy</a>
-      <a class="btn subtle" href="${TERMS_URL}" target="_blank" rel="noopener">Termini di servizio</a>
-      ${planHas('ads')?'<button class="btn subtle" onclick="openAdPrivacyOptions()">Preferenze pubblicitarie</button>':''}
-      <button class="btn subtle" onclick="exportMyData()">Esporta i miei dati (JSON)</button>
-      <button class="btn danger ghost" onclick="openDeleteAccount()">Elimina account e dati</button>
+    <div style="display:flex;flex-direction:column;gap:8px;flex-wrap:wrap;">
+      <a class="btn subtle" style="width: 100%;" href="${PRIVACY_URL}" target="_blank" rel="noopener">Informativa Privacy</a>
+      <a class="btn subtle" style="width: 100%;" href="${TERMS_URL}" target="_blank" rel="noopener">Termini di servizio</a>
+      ${planHas('ads')?'<button class="btn subtle" style="width: 100%;" onclick="openAdPrivacyOptions()">Preferenze pubblicitarie</button>':''}
+      <button class="btn subtle" style="width: 100%;" onclick="exportMyData()">Esporta i miei dati (JSON)</button>
+      <button class="btn danger ghost" style="width: 100%;" onclick="openDeleteAccount()">Elimina account e dati</button>
     </div>
   </div>`;
 }
@@ -3866,10 +3866,10 @@ function renderTipsCard(){
   <div class="card">
     <div class="card-head"><h2 style="font-size:16px;">Suggerimenti</h2></div>
     <div class="section-label">Un piccolo assistente che, al massimo una volta al giorno, propone un'azione utile in base a cosa non hai ancora usato (per esempio registrare un'auto o un'entrata). ${esc(status)}</div>
-    <div style="display:flex;gap:8px;flex-wrap:wrap;">
-      <button class="btn subtle" onclick="snoozeDailyTip('week')">Pausa 1 settimana</button>
-      <button class="btn subtle" onclick="snoozeDailyTip('month')">Pausa 1 mese</button>
-      <button class="btn subtle" onclick="snoozeDailyTip('forever')">Disattiva per sempre</button>
+    <div style="display:flex;flex-direction:column;gap:8px;flex-wrap:wrap;">
+      <button class="btn subtle" style="width: 100%;" onclick="snoozeDailyTip('week')">Pausa 1 settimana</button>
+      <button class="btn subtle" style="width: 100%;" onclick="snoozeDailyTip('month')">Pausa 1 mese</button>
+      <button class="btn subtle" style="width: 100%;" onclick="snoozeDailyTip('forever')">Disattiva per sempre</button>
       ${until?`<button class="btn primary" onclick="snoozeDailyTip(null)">Riattiva ora</button>`:''}
     </div>
   </div>`;
