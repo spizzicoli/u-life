@@ -47,7 +47,7 @@ input,select,textarea{font-family:inherit;font-size:14px;color:var(--ink);}
 .header h1{font-size:29px;letter-spacing:-.3px;}
 .header .sub{color:var(--ink-soft);font-size:13.5px;margin-top:4px;}
 .backup-btns{display:flex;gap:8px;flex-wrap:wrap;}
-.header-right{position:absolute;top:calc(10px + env(safe-area-inset-top));right:calc(10px + env(safe-area-inset-right));display:flex;align-items:center;gap:8px;}
+.header-right{position:absolute;top:10px;right:10px;display:flex;align-items:center;gap:8px;}
 .icon-btn{padding:10px;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(0,0,0,.08);}
 .icon-btn svg{width:21px;height:21px;}
 

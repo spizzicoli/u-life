@@ -218,26 +218,30 @@ function showSyncError(){
 
 // ---------- valori predefiniti / normalizzazione ----------
 function normalizeState(){
-  if(!state.settings) state.settings = {};
+  // Supabase può restituire una tabella vuota come null/undefined per un account appena creato.
+  // Garantisco qui la forma completa dello stato, prima di qualsiasi render o elaborazione.
+  const arrayKeys = [
+    'health','bills','homeTasks','installments','expenses','incomes','cars','carEvents',
+    'events','homeDocuments','personalDocs','contacts','medicines','seasonalTasks',
+    'assets','trash','activityLog'
+  ];
+  arrayKeys.forEach(k=>{ if(!Array.isArray(state[k])) state[k] = []; });
+
+  if(!state.homeInfo || typeof state.homeInfo!=='object') state.homeInfo = {street:'',city:'',cap:'',note:''};
+  if(!state.settings || typeof state.settings!=='object') state.settings = {};
   if(state.settings.reminderDaysAhead===undefined) state.settings.reminderDaysAhead = 3;
   state.settings.theme = resolveThemeId(state.settings.theme);
   if(state.settings.pin===undefined) state.settings.pin = '0584';
   if(state.settings.pinEnabled===undefined) state.settings.pinEnabled = false;
   if(state.settings.autoLockMinutes===undefined) state.settings.autoLockMinutes = 10;
-  if(!state.settings.budgets) state.settings.budgets = {};
+  if(!state.settings.budgets || typeof state.settings.budgets!=='object') state.settings.budgets = {};
   if(state.settings.onboardingDone===undefined) state.settings.onboardingDone = false;
   if(state.settings.lastBriefingShown===undefined) state.settings.lastBriefingShown = '';
   if(state.settings.ownerName===undefined) state.settings.ownerName = '';
-  if(!state.homeDocuments) state.homeDocuments = [];
-  if(!state.personalDocs) state.personalDocs = [];
-  if(!state.contacts) state.contacts = [];
-  if(!state.trash) state.trash = [];
-  if(!state.activityLog) state.activityLog = [];
-  if(!state.medicines) state.medicines = [];
-  if(!state.seasonalTasks) state.seasonalTasks = [];
-  if(!state.assets) state.assets = [];
-  if(!state.incomes) state.incomes = [];
-  if(!state.wellness) state.wellness = { routines: [], notificationsAsked:false };
+
+  if(!state.wellness || typeof state.wellness!=='object') state.wellness = {};
+  if(!Array.isArray(state.wellness.routines)) state.wellness.routines = [];
+  if(state.wellness.notificationsAsked===undefined) state.wellness.notificationsAsked = false;
 }
 // Dati che vivono solo su questo dispositivo (registro attività, ultimo promemoria benessere):
 // quando ricarico dal server li rimetto al loro posto.
@@ -488,40 +492,77 @@ async function quickDeviceLogin(){
   const errBox = document.getElementById('authError');
   if(!saved){ showAuthScreen('login',{manual:true}); return; }
   if(errBox) errBox.style.display='none';
-  const { error } = await taccuinoDB.signIn(saved.email, saved.password);
-  if(error){
-    forgetDeviceCredential();
-    if(errBox){ errBox.textContent = 'Le credenziali salvate non sono più valide: accedi di nuovo.'; errBox.style.display='block'; }
-    setTimeout(()=>showAuthScreen('login',{manual:true}), 1200);
-    return;
+  try{
+    const { error } = await taccuinoDB.signIn(saved.email, saved.password);
+    if(error){
+      forgetDeviceCredential();
+      if(errBox){ errBox.textContent = 'Le credenziali salvate non sono più valide: accedi di nuovo.'; errBox.style.display='block'; }
+      setTimeout(()=>showAuthScreen('login',{manual:true}), 1200);
+      return;
+    }
+    document.getElementById('lockScreen').classList.remove('active');
+    await loadState();
+  }catch(e){
+    console.error('Errore nel login rapido:', e);
+    document.getElementById('lockScreen').classList.add('active');
+    if(errBox){ errBox.textContent = 'Accesso riuscito, ma non sono riuscito a caricare i dati. Riprova.'; errBox.style.display='block'; }
   }
-  document.getElementById('lockScreen').classList.remove('active');
-  await loadState();
 }
 async function handleAuthSubmit(mode){
   const email = val('auth_email').trim();
   const password = val('auth_password');
   const errBox = document.getElementById('authError');
+  const submitBtn = document.querySelector('#lockScreen .btn.primary');
+  if(submitBtn){ submitBtn.disabled = true; submitBtn.textContent = mode==='signup' ? 'Registrazione…' : 'Accesso…'; }
   errBox.style.display='none';
-  if(!email || !password){ errBox.textContent='Inserisci email e password.'; errBox.style.display='block'; return; }
-  if(password.length<6){ errBox.textContent='La password deve avere almeno 6 caratteri.'; errBox.style.display='block'; return; }
-  const fn = mode==='signup' ? taccuinoDB.signUp : taccuinoDB.signIn;
-  const { data, error } = await fn(email, password);
-  if(error){ errBox.textContent = error.message; errBox.style.display='block'; return; }
-  const proceed = async () => {
+
+  try{
+    if(!email || !password){
+      errBox.textContent='Inserisci email e password.'; errBox.style.display='block'; return;
+    }
+    if(password.length<6){
+      errBox.textContent='La password deve avere almeno 6 caratteri.'; errBox.style.display='block'; return;
+    }
+
+    const fn = mode==='signup' ? taccuinoDB.signUp : taccuinoDB.signIn;
+    const { data, error } = await fn(email, password);
+    if(error){ errBox.textContent = error.message; errBox.style.display='block'; return; }
+
     if(mode==='signup' && !data.session){
       errBox.className='notice';
       errBox.textContent = 'Account creato! Controlla la tua email per confermarlo, poi torna qui ad accedere.';
       errBox.style.display='block';
       return;
     }
+
+    // Il login Supabase è già riuscito. Mostro subito l'app e solo dopo carico i dati:
+    // il vecchio flusso apriva prima il popup "salva accesso", lasciando lockScreen attivo.
     document.getElementById('lockScreen').classList.remove('active');
     await loadState();
-  };
-  const saved = readDeviceCredential();
-  const alreadySavedThis = saved && saved.email===email && saved.password===password;
-  if(alreadySavedThis) await proceed();
-  else offerSaveCredential(email, password, proceed);
+
+    // Il salvataggio facoltativo delle credenziali non deve più bloccare la transizione.
+    // Lo propongo solo quando la schermata principale è già stata caricata e non c'è un altro modal.
+    const saved = readDeviceCredential();
+    const alreadySavedThis = saved && saved.email===email && saved.password===password;
+    if(!alreadySavedThis){
+      setTimeout(()=>{
+        const overlay = document.getElementById('overlay');
+        if(unlocked && !(overlay && overlay.classList.contains('active'))){
+          offerSaveCredential(email, password, ()=>{});
+        }
+      }, 700);
+    }
+  }catch(e){
+    console.error('Errore durante il completamento del login:', e);
+    document.getElementById('lockScreen').classList.add('active');
+    errBox.textContent = 'Accesso riuscito, ma non sono riuscito a caricare i dati. Riprova.';
+    errBox.style.display='block';
+  }finally{
+    if(submitBtn && document.getElementById('lockScreen').classList.contains('active')){
+      submitBtn.disabled = false;
+      submitBtn.textContent = mode==='signup' ? 'Registrati' : 'Accedi';
+    }
+  }
 }
 async function logout(){
   if(pendingSync){
@@ -3665,7 +3706,12 @@ async function onAppReady(){
   startWellnessEngine();
   checkAIStatus();
   refreshNotifPermission().then(()=>{ scheduleNotificationsSoon(); if(unlocked) render(); });
-  refreshPlan(false).then(()=>{ syncAds(); if(unlocked) render(); });
+  refreshPlan(false).then(()=>{
+    if(unlocked) render();
+    // Gli SDK pubblicitari nativi non devono mai far dipendere l'avvio dell'app.
+    // Su iOS li inizializzo a freddo dopo il primo render.
+    setTimeout(()=>{ syncAds().catch(e=>console.warn('[AdMobTrace] avvio differito fallito:', e)); }, 1500);
+  }).catch(e=>console.warn('Aggiornamento piano non riuscito:', e));
   maybeShowDailyTipSoon();
 }
 
@@ -3828,6 +3874,14 @@ function renderTipsCard(){
     </div>
   </div>`;
 }
+
+// ---------- diagnostica errori runtime ----------
+window.addEventListener('error', e=>{
+  console.error('[u-life] Errore runtime:', e.error || e.message, e.filename, e.lineno, e.colno);
+});
+window.addEventListener('unhandledrejection', e=>{
+  console.error('[u-life] Promise non gestita:', e.reason);
+});
 
 // ---------- helpers ----------
 function val(id){ const el=document.getElementById(id); return el?el.value:''; }
