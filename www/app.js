@@ -2589,7 +2589,7 @@ function renderWellness(){
         <div class="item-top">
           <div><span class="tag" style="background:${r.color||'var(--c-salute-soft)'}22;color:${r.color||'var(--c-salute)'};border-color:transparent;">${esc(r.category)}</span>${!r.enabled?'<span class="tag archived">In pausa</span>':''}<div class="item-title">${esc(r.label)}</div><div class="item-meta">${schedule}${streak>0?(' · 🔥 '+streak+' giorni di fila'):''}</div></div>
           <div class="item-actions">
-            <button class="btn small ${doneToday?'subtle':'primary'}" onclick="toggleRoutineDoneToday('${r.id}')">${doneToday?'✅ Fatto oggi':'Segna fatto oggi'}</button>
+            <button class="btn small ${doneToday?'subtle':'primary'}" onclick="toggleRoutineDoneToday('${r.id}')">${doneToday?'✅ Fatto oggi':'Fatto oggi'}</button>
             <button class="btn small ghost" onclick="toggleRoutineEnabled('${r.id}')">${r.enabled?'Metti in pausa':'Riattiva'}</button>
             <button class="btn small ghost" onclick="openRoutineForm('${r.id}')">Modifica</button>
             <button class="btn small danger ghost" onclick="confirmDelete('Eliminare questa routine?', ()=>deleteRoutine('${r.id}'))">Elimina</button>
@@ -2992,7 +2992,7 @@ function renderSettings(){
     <div class="card-head"><h2 style="font-size:16px;">Calendario</h2></div>
     <div style="display:flex;gap:8px;flex-wrap:wrap;">
       <button style="width: 100%;" class="btn subtle" onclick="exportICS()">Esporta calendario (.ics)</button>
-      <label style="width: 100%;" class="btn subtle" style="display:inline-flex;align-items:center;">Importa calendario (.ics)<input type="file" accept=".ics" style="display:none" onchange="importICS(this)"></label>
+      <label style="width: 100%;" class="btn subtle" style="text-align:center;display:inline-flex;align-items:center;">Importa calendario (.ics)<input type="file" accept=".ics" style="display:none" onchange="importICS(this)"></label>
     </div>
     <div class="section-label" style="margin-top:8px;">Esporta per vedere i tuoi impegni su Google/Apple Calendar dal telefono, oppure importa un calendario esistente.</div>
   </div>
@@ -3686,8 +3686,8 @@ function renderPrivacyCard(){
     <div class="section-label">I tuoi dati sono tuoi: puoi rileggere l’informativa, portarli via o cancellarli quando vuoi.</div>
     <div class="field"><label style="display:flex;gap:10px;align-items:center;cursor:pointer;"><input type="checkbox" ${hasHealthConsent()?'checked':''} onchange="toggleHealthConsent(this.checked)" style="width:20px;height:20px;"> Consenso al trattamento dei dati sulla salute (sezione Salute e Farmaci)</label></div>
     <div style="display:flex;flex-direction:column;gap:8px;flex-wrap:wrap;">
-      <a class="btn subtle" style="width: 100%;" href="${PRIVACY_URL}" target="_blank" rel="noopener">Informativa Privacy</a>
-      <a class="btn subtle" style="width: 100%;" href="${TERMS_URL}" target="_blank" rel="noopener">Termini di servizio</a>
+      <a class="btn subtle" style="width: 100%; text-align: center;" href="${PRIVACY_URL}" target="_blank" rel="noopener">Informativa Privacy</a>
+      <a class="btn subtle" style="width: 100%; text-align: center;" href="${TERMS_URL}" target="_blank" rel="noopener">Termini di servizio</a>
       ${planHas('ads')?'<button class="btn subtle" style="width: 100%;" onclick="openAdPrivacyOptions()">Preferenze pubblicitarie</button>':''}
       <button class="btn subtle" style="width: 100%;" onclick="exportMyData()">Esporta i miei dati (JSON)</button>
       <button class="btn danger ghost" style="width: 100%;" onclick="openDeleteAccount()">Elimina account e dati</button>
