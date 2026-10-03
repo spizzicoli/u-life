@@ -1,5 +1,22 @@
 # Il mio taccuino — versione ibrida (Android + iOS)
 
+## Build iOS e aggiornamento Supabase
+
+Le note e i nuovi promemoria auto richiedono una migrazione del database:
+esegui `supabase/migrations/20261003_notes_and_car_reminders.sql` nel SQL Editor
+del progetto Supabase prima di usare le nuove funzioni. La sincronizzazione delle
+note avviene con il tuo account e rispetta le policy RLS.
+
+Per preparare i sorgenti nativi dopo aver aggiornato il codice web, esegui
+`npm ci` e `npx cap sync ios`. Il workflow `ios-debug` su Codemagic esegue già
+la sincronizzazione e produce un IPA Debug senza firma, pronto per il flusso
+di firma/installazione con AltServer.
+
+L'importazione da Calendario iPhone e Google Calendar usa file `.ics` (appuntamenti
+VEVENT e promemoria VTODO, se presenti nel file): iOS non consente a questa app
+di leggere direttamente tutti gli eventi delle altre app, e l'importazione Google
+diretta richiederebbe configurare l'accesso OAuth.
+
 ## Upgrade Pro e Premium per gli account di test (Supabase)
 
 Per testare le funzionalità Pro e Premium senza effettuare pagamenti, puoi assegnare manualmente un piano ai tuoi account di test direttamente dal database Supabase.

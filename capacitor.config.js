@@ -16,7 +16,8 @@ const config = {
   plugins: {
     LocalNotifications: {
       iconColor: '#0582CA',
-      sound: 'default'
+      sound: 'default',
+      presentationOptions: ['badge', 'sound', 'banner', 'list']
     }
   }
 };

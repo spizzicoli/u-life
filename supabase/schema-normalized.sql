@@ -1,17 +1,9 @@
 -- ============================================================
 -- SCHEMA NORMALIZZATO "IU-Life" — Fase 2 (opzionale)
 -- ============================================================
--- ATTENZIONE: questo è un secondo schema, alternativo a quello che
--- già usi e funziona (supabase/schema.sql, tabella unica "app_state").
--- Eseguendo questo file NON perdi i dati che hai già: crea tabelle
--- nuove e separate, non tocca "app_state".
---
--- Però l'app in questo momento parla ancora con "app_state": collegare
--- davvero queste tabelle nuove richiede riscrivere le funzioni di
--- salvataggio/lettura in app.js (una per ogni sezione, circa 40 punti).
--- È un lavoro sostanzioso: te lo preparo qui come base pronta, poi
--- dimmi se vuoi che proceda anche con quella migrazione del codice,
--- così evitiamo di toccare qualcosa che oggi funziona senza conferma.
+-- Questo è lo schema normalizzato usato dal client Supabase
+-- (src/supabaseClient.js e www/supabaseClient.js). `schema.sql` conserva
+-- invece la struttura legacy basata su una singola tabella JSON `app_state`.
 --
 -- Vantaggi di queste tabelle separate rispetto al blocco unico:
 -- - puoi fare query dirette (es. "somma spese di marzo per categoria")
@@ -129,7 +121,9 @@ create table if not exists cars (
   id text primary key,
   user_id uuid not null references auth.users(id) on delete cascade,
   name text, plate text, model text, year int, km numeric, start_km numeric,
-  last_service_km numeric, service_interval_km numeric, archived boolean default false,
+  last_service_km numeric, service_interval_km numeric, next_service_date date,
+  insurance_company text, insurance_policy text, insurance_expiry date, road_tax_due date,
+  car_note text, archived boolean default false,
   created_at timestamptz default now()
 );
 
@@ -145,11 +139,20 @@ create table if not exists car_events (
 create table if not exists events (
   id text primary key,
   user_id uuid not null references auth.users(id) on delete cascade,
-  title text, date date, time text, note text,
+  title text, date date, end_date date, time text, note text,
   recur text default 'none',       -- none | monthly | yearly
   category text default 'Altro',   -- Salute | Lavoro | Famiglia | Sport | Altro
   linked_from text,                -- non nullo se l'evento è generato automaticamente da un'altra sezione
   created_at timestamptz default now()
+);
+
+create table if not exists notes (
+  id text primary key,
+  user_id uuid not null references auth.users(id) on delete cascade,
+  title text not null default '', content text default '',
+  list_type text not null default 'text', items jsonb not null default '[]'::jsonb,
+  selected_item text default '',
+  created_at date default current_date, updated_at date default current_date
 );
 
 -- ---------- Amministrazione ----------
@@ -207,7 +210,7 @@ begin
   for t in select unnest(array[
     'profiles','health','medicines','bills','home_tasks','installments',
     'home_documents','seasonal_tasks','expenses','assets','cars','car_events',
-    'events','personal_docs','contacts','wellness_routines','trash','activity_log'
+    'events','notes','personal_docs','contacts','wellness_routines','trash','activity_log'
   ])
   loop
     execute format('alter table %I enable row level security;', t);

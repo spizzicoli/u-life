@@ -1,7 +1,7 @@
 let state = {
   health: [], homeInfo:{street:'',city:'',cap:'',note:''},
   bills: [], homeTasks: [], installments: [],
-  expenses: [], incomes: [], cars: [], carEvents: [], events: [], homeDocuments: [],
+  expenses: [], incomes: [], cars: [], carEvents: [], events: [], notes: [], homeDocuments: [],
   personalDocs: [], contacts: [], medicines: [], seasonalTasks: [], assets: [],
   trash: [], activityLog: [],
   settings: { reminderDaysAhead: 3, theme: 'light', pin:'0584', pinEnabled:false, autoLockMinutes:10, budgets:{}, onboardingDone:false, lastBriefingShown:'' }
@@ -222,7 +222,7 @@ function normalizeState(){
   // Garantisco qui la forma completa dello stato, prima di qualsiasi render o elaborazione.
   const arrayKeys = [
     'health','bills','homeTasks','installments','expenses','incomes','cars','carEvents',
-    'events','homeDocuments','personalDocs','contacts','medicines','seasonalTasks',
+    'events','notes','homeDocuments','personalDocs','contacts','medicines','seasonalTasks',
     'assets','trash','activityLog'
   ];
   arrayKeys.forEach(k=>{ if(!Array.isArray(state[k])) state[k] = []; });
@@ -773,9 +773,10 @@ function restoreFromTrash(trashId){
     case 'homeDocument': state.homeDocuments.push(t.data); break;
     case 'personalDoc': state.personalDocs.push(t.data); syncLinkedEvent('persdoc-'+t.data.id, t.data.expiryDate, 'Scadenza '+(t.data.title||t.data.type), 'Documento personale'); break;
     case 'contact': state.contacts.push(t.data); break;
-    case 'car': state.cars.push(t.data); break;
+    case 'car': state.cars.push(t.data); syncCarReminders(t.data); break;
     case 'carEvent': { state.carEvents.push(t.data); upsertExpense('car-'+t.data.id, t.data.type, t.data.cost, t.data.date, 'Auto'); const car=state.cars.find(x=>x.id===t.data.carId); syncLinkedEvent('carevt-'+t.data.id, t.data.date, (car?car.name+' - ':'')+t.data.type, 'Auto'); break; }
     case 'event': state.events.push(t.data); break;
+    case 'note': state.notes.push(t.data); break;
     case 'expense': state.expenses.push(t.data); break;
     case 'income': state.incomes.push(t.data); break;
     case 'medicine': state.medicines.push(t.data); syncLinkedEvent('med-'+t.data.id, t.data.expiryDate, 'Scadenza farmaco: '+t.data.name, 'Farmacia'); break;
@@ -880,6 +881,11 @@ function collectUpcoming(){
   state.bills.forEach(b=>{ if(b.nextDue) list.push({title:b.provider, sub:'Bolletta · '+euro(b.amount), date:b.nextDue}); });
   state.installments.forEach(i=>{ if(i.nextDue) list.push({title:i.title, sub:'Rata · '+euro(i.installmentAmount), date:i.nextDue}); });
   state.carEvents.forEach(c=>{ const car=state.cars.find(x=>x.id===c.carId); if(c.date) list.push({title:(car?car.name+' · ':'')+c.type, sub:'Auto', date:c.date}); });
+  state.cars.forEach(c=>{
+    if(c.nextServiceDate) list.push({title:'Manutenzione · '+c.name,sub:'Auto',date:c.nextServiceDate});
+    if(c.insuranceExpiry) list.push({title:'Assicurazione · '+c.name,sub:c.insuranceCompany||'Auto',date:c.insuranceExpiry});
+    if(c.roadTaxDue) list.push({title:'Bollo · '+c.name,sub:'Auto',date:c.roadTaxDue});
+  });
   state.personalDocs.forEach(p=>{ if(p.expiryDate) list.push({title:p.title||p.type, sub:'Documento personale', date:p.expiryDate}); });
   if(hasHealthConsent()) state.medicines.forEach(m=>{ if(m.expiryDate) list.push({title:m.name, sub:'Farmaco in scadenza', date:m.expiryDate}); });
   state.events.forEach(e=>{ if(!e.linkedFrom) list.push({title:e.title, sub:'Calendario'+(e.time?(' · '+e.time):''), date: nextOccurrenceDate(e)}); });
@@ -1080,6 +1086,7 @@ function buildSearchIndex(){
   state.assets.forEach(a=>idx.push({type:'Bene', label:a.name, sub:'', text:(a.name+' '+(a.note||'')).toLowerCase(), tags:[], go:()=>{ setTab('admin'); openAssetForm(a.id); }}));
   (state.wellness.routines||[]).forEach(r=>idx.push({type:'Benessere', label:r.label, sub:r.category, text:(r.label+' '+r.category).toLowerCase(), tags:[], go:()=>{ setTab('wellness'); openRoutineForm(r.id); }}));
   state.cars.forEach(c=>idx.push({type:'Auto', label:c.name, sub:c.plate||'', text:(c.name+' '+(c.model||'')+' '+(c.plate||'')).toLowerCase(), tags:[], go:()=>{ setTab('cars'); }}));
+  state.notes.forEach(n=>idx.push({type:'Nota',label:n.title,sub:n.listType==='text'?'Nota':'Lista',text:(n.title+' '+(n.content||'')+' '+(n.items||[]).map(i=>i.text).join(' ')).toLowerCase(),tags:[],go:()=>{setTab('notes');}}));
   state.carEvents.forEach(e=>{ const car=state.cars.find(x=>x.id===e.carId); idx.push({type:'Evento auto', label:e.type+(car?(' · '+car.name):''), sub:e.date, text:(e.type+' '+(e.note||'')+' '+(e.tags||[]).join(' ')).toLowerCase(), tags:e.tags||[], go:()=>{ setTab('cars'); }}); });
   state.events.filter(e=>!e.linkedFrom).forEach(e=>idx.push({type:'Calendario', label:e.title, sub:fmtD(e.date), text:(e.title+' '+(e.note||'')).toLowerCase(), tags:[], go:()=>jumpToCalendarEvent(e.id)}));
   return idx;
@@ -1179,6 +1186,7 @@ function render(){
     </div>
     <nav class="tabs">
       ${tabBtn('home','calendar','Panoramica')}
+      ${tabBtn('notes','doc','Note')}
       ${tabBtn('health','health','Salute')}
       ${tabBtn('house','house','Casa')}
       ${tabBtn('savings','piggy','Salvadanaio')}
@@ -1188,6 +1196,7 @@ function render(){
       ${tabBtn('admin','admin','Amministrazione')}
     </nav>
     <div class="panel ${activeTab==='home'?'active':''}">${renderHome()}</div>
+    <div class="panel ${activeTab==='notes'?'active':''}">${renderNotes()}</div>
     <div class="panel ${activeTab==='health'?'active':''}">${renderHealth()}</div>
     <div class="panel ${activeTab==='house'?'active':''}">${renderHouse()}</div>
     <div class="panel ${activeTab==='savings'?'active':''}">${renderSavings()}</div>
@@ -1239,6 +1248,13 @@ function renderHome(){
       <button class="btn primary" onclick="runQuickAdd()">Aggiungi</button>
     </div>
   </div>
+  <div class="card quick-note-card">
+    <div class="card-head"><h2 style="font-size:16px;">Nota rapida</h2><button class="btn small subtle" onclick="setTab('notes')">Tutte le note</button></div>
+    <div class="quick-add-row">
+      <textarea id="quickNoteInput" rows="2" placeholder="Salva al volo un'informazione utile…"></textarea>
+      <button class="btn primary" onclick="quickAddNote()">Salva nota</button>
+    </div>
+  </div>
   <div class="stat-row">
     <div class="stat"><div class="label">Spese registrate</div><div class="value">${euro(totalSpese)}</div></div>
     <div class="stat"><div class="label">Spese questo mese</div><div class="value">${euro(curM)}</div>${diffPct!==null?`<div class="item-meta" style="margin-top:2px;">${diffPct>=0?'+':''}${diffPct}% rispetto al mese scorso</div>`:''}</div>
@@ -1261,6 +1277,108 @@ function renderHome(){
     </div>
     <div class="chart-wrap"><canvas id="chartYearly" height="90"></canvas></div>
   </div>`;
+}
+function renderNotes(){
+  const notes = [...state.notes].sort((a,b)=>(b.updatedAt||b.createdAt||'').localeCompare(a.updatedAt||a.createdAt||''));
+  const oldCount = notes.filter(n=>n.updatedAt && n.updatedAt < (()=>{const d=new Date();d.setFullYear(d.getFullYear()-1);return isoLocal(d);})()).length;
+  return `
+    <div class="card">
+      <div class="card-head">
+        <div class="title-group">${sectionIcon('doc','var(--c-calendario)','var(--c-calendario-soft)')}<div><h2>Le mie note</h2><div class="item-meta">${notes.length} ${notes.length===1?'nota':'note'}</div></div></div>
+        <div class="item-actions">
+          ${oldCount?`<button class="btn small danger ghost" onclick="deleteOldNotes()">Elimina vecchie (${oldCount})</button>`:''}
+          <button class="btn primary" onclick="openNoteForm()">Nuova nota</button>
+        </div>
+      </div>
+      ${notes.length ? notes.map(note=>`
+        <article class="item note-item">
+          <div class="item-top">
+            <div>
+              <div class="item-title">${esc(note.title||'Senza titolo')}</div>
+              <div class="item-meta">${note.listType==='text'?'Nota':note.listType==='radio'?'Scelta':note.listType==='todo'?'Todo list':'Checklist'} · Modificata ${fmtD(note.updatedAt||note.createdAt)}</div>
+            </div>
+            <div class="item-actions">
+              <button class="btn small ghost" onclick="openNoteForm('${note.id}')">Modifica</button>
+              <button class="btn small danger ghost" onclick="confirmDelete('Spostare questa nota nel cestino?', ()=>deleteNote('${note.id}'))">Elimina</button>
+            </div>
+          </div>
+          ${note.listType==='text'
+            ? `<div class="item-desc note-content">${esc(note.content||'').replace(/\n/g,'<br>')}</div>`
+            : `<div class="note-checklist">${(note.items||[]).map((item,index)=>`<label class="note-check-row ${item.done?'done':''}">
+                <input type="${note.listType==='radio'?'radio':'checkbox'}" name="note-radio-${note.id}" ${note.listType==='radio'?(note.selectedItem===item.id?'checked':''):(item.done?'checked':'')} onchange="toggleNoteItem('${note.id}',${index},this.checked)">
+                <span>${esc(item.text)}</span>
+              </label>`).join('')||'<div class="item-meta">Nessuna voce nella lista.</div>'}</div>`}
+        </article>`).join('') : '<div class="empty">Ancora nessuna nota. Salva informazioni utili o crea una lista.</div>'}
+    </div>`;
+}
+function openNoteForm(id){
+  const note = id ? state.notes.find(n=>n.id===id) : null;
+  const listType = note ? (note.listType||'text') : 'text';
+  const body = note && listType!=='text' ? (note.items||[]).map(item=>item.text).join('\n') : (note?.content||'');
+  openModal(`
+    <h3>${id?'Modifica nota':'Nuova nota'}</h3>
+    <div class="field"><label>Titolo</label><input id="f_noteTitle" value="${esc(note?.title||'')}" placeholder="Es. Idee per il viaggio"></div>
+    <div class="field"><label>Tipo</label><select id="f_noteType">
+      <option value="text" ${listType==='text'?'selected':''}>Nota</option>
+      <option value="checkbox" ${listType==='checkbox'?'selected':''}>Lista checkbox</option>
+      <option value="radio" ${listType==='radio'?'selected':''}>Lista radio (una scelta)</option>
+      <option value="todo" ${listType==='todo'?'selected':''}>Todo list</option>
+    </select></div>
+    <div class="field"><label id="f_noteBodyLabel">${listType==='text'?'Contenuto':'Una voce per riga'}</label><textarea id="f_noteBody" rows="7" placeholder="${listType==='text'?'Scrivi la tua nota…':'Aggiungi una voce per riga…'}">${esc(body)}</textarea></div>
+    <div class="modal-actions"><button class="btn ghost" onclick="closeModal()">Annulla</button><button class="btn primary" onclick="saveNote('${id||''}')">Salva nota</button></div>
+  `);
+  document.getElementById('f_noteType').addEventListener('change',e=>{
+    const isText=e.target.value==='text';
+    document.getElementById('f_noteBodyLabel').textContent=isText?'Contenuto':'Una voce per riga';
+    document.getElementById('f_noteBody').placeholder=isText?'Scrivi la tua nota…':'Aggiungi una voce per riga…';
+  });
+}
+function saveNote(id){
+  const title=val('f_noteTitle').trim(), listType=val('f_noteType'), body=val('f_noteBody').trim();
+  if(!title){ alert('Aggiungi un titolo alla nota.'); return; }
+  if(!body){ alert(listType==='text'?'Scrivi il contenuto della nota.':'Aggiungi almeno una voce alla lista.'); return; }
+  pushUndo();
+  const old=id?state.notes.find(n=>n.id===id):null;
+  const lines=listType==='text'?[]:body.split(/\r?\n/).map(line=>line.trim()).filter(Boolean);
+  const oldItems=old?.items||[];
+  const items=lines.map((text,index)=>{
+    const previous=oldItems.find(item=>item.text===text)||oldItems[index];
+    return {id:previous?.id||uid(),text,done:previous?.done||false};
+  });
+  const note=old||{id:uid(),createdAt:todayStr()};
+  Object.assign(note,{title,listType,content:listType==='text'?body:'',items,selectedItem:listType==='radio'&&items.some(item=>item.id===old?.selectedItem)?old.selectedItem:'',updatedAt:todayStr()});
+  if(!old) state.notes.unshift(note);
+  closeModal(); saveState(); toast('Nota salvata.');
+}
+function quickAddNote(){
+  const input=document.getElementById('quickNoteInput'), content=input?.value.trim()||'';
+  if(!content){ toast('Scrivi qualcosa prima di salvare.'); return; }
+  pushUndo();
+  const title=content.split(/\r?\n/)[0].slice(0,60)||'Nota rapida';
+  state.notes.unshift({id:uid(),title,content,listType:'text',items:[],selectedItem:'',createdAt:todayStr(),updatedAt:todayStr()});
+  saveState(); toast('Nota rapida salvata.');
+}
+function toggleNoteItem(id,index,checked){
+  pushUndo();
+  const note=state.notes.find(n=>n.id===id), item=note?.items?.[index];
+  if(!note||!item) return;
+  if(note.listType==='radio') note.selectedItem=item.id;
+  else item.done=checked;
+  note.updatedAt=todayStr(); saveState();
+}
+function deleteNote(id){
+  pushUndo();
+  const note=state.notes.find(n=>n.id===id); if(!note) return;
+  trashItem('note',note,note.title);
+  state.notes=state.notes.filter(n=>n.id!==id); saveState();
+}
+function deleteOldNotes(){
+  const cutoff=new Date(); cutoff.setFullYear(cutoff.getFullYear()-1);
+  const old=state.notes.filter(n=>n.updatedAt && new Date(n.updatedAt+'T00:00')<cutoff);
+  if(!old.length){ toast('Non ci sono note più vecchie di un anno.'); return; }
+  if(!confirm(`Spostare ${old.length} ${old.length===1?'nota':'note'} vecchie nel cestino?`)) return;
+  pushUndo(); old.forEach(note=>trashItem('note',note,note.title));
+  const ids=new Set(old.map(note=>note.id)); state.notes=state.notes.filter(note=>!ids.has(note.id)); saveState();
 }
 function toggleAIAssistant(){
   if(!planHas('ai')){ openPaywall('🔒 PREMIUM · L’assistente AI è incluso nel piano Premium.'); return; }
@@ -2221,6 +2339,12 @@ function renderCars(){
           <div class="item-meta">${esc(c.model||'')} ${c.year?(' · '+c.year):''}${c.km?(' · '+Number(c.km).toLocaleString('it-IT')+' km'):''}</div>
           ${kmEstimate?`<div class="item-meta">${kmEstimate}</div>`:''}
           ${costPerKm?`<div class="item-meta">Costo stimato: ${costPerKm.toFixed(3)} €/km percorso</div>`:''}</div>
+          <div class="car-reminders">
+            ${c.nextServiceDate?`<span>Manutenzione: ${fmtD(c.nextServiceDate)}</span>`:''}
+            ${c.insuranceExpiry?`<span>Assicurazione${c.insuranceCompany?' · '+esc(c.insuranceCompany):''}: ${fmtD(c.insuranceExpiry)}</span>`:''}
+            ${c.roadTaxDue?`<span>Bollo: ${fmtD(c.roadTaxDue)}</span>`:''}
+            ${c.carNote?`<span>${esc(c.carNote)}</span>`:''}
+          </div>
           <div class="item-actions">
             ${c.archived? `<button class="btn small subtle" onclick="unarchiveCar('${c.id}')">Ripristina</button>` : `<button class="btn small subtle" onclick="archiveCar('${c.id}')">Archivia</button>`}
             <button class="btn small subtle" onclick="openCarEventForm(null,'${c.id}')">Evento</button>
@@ -2259,7 +2383,7 @@ function carCostPerKm(c){
   return totalCost/kmDriven;
 }
 function openCarForm(id){
-  const c = id ? state.cars.find(x=>x.id===id) : {name:'',plate:'',model:'',year:'',km:'',startKm:'',lastServiceKm:'',serviceIntervalKm:''};
+  const c = id ? state.cars.find(x=>x.id===id) : {name:'',plate:'',model:'',year:'',km:'',startKm:'',lastServiceKm:'',serviceIntervalKm:'',nextServiceDate:'',insuranceCompany:'',insurancePolicy:'',insuranceExpiry:'',roadTaxDue:'',carNote:''};
   openModal(`
     <h3>${id?'Modifica auto':'Nuova auto'}</h3>
     <div class="field"><label>Nome (es. "Panda", "Auto di famiglia")</label><input id="f_name" value="${esc(c.name||'')}"></div>
@@ -2268,6 +2392,11 @@ function openCarForm(id){
     <div class="field"><label>Km iniziali (per calcolare il costo al km)</label><input type="number" id="f_startKm" value="${c.startKm||''}" placeholder="km quando hai iniziato a tracciare"></div>
     <div class="section-label">Promemoria tagliando basato sui km (opzionale)</div>
     <div class="field-row"><div class="field"><label>Km all'ultimo tagliando</label><input type="number" id="f_lastServiceKm" value="${c.lastServiceKm||''}"></div><div class="field"><label>Intervallo tagliando (km)</label><input type="number" id="f_serviceIntervalKm" value="${c.serviceIntervalKm||''}" placeholder="es. 15000"></div></div>
+    <div class="section-label">Scadenze e informazioni utili</div>
+    <div class="field"><label>Prossima manutenzione</label><input type="date" id="f_nextServiceDate" value="${c.nextServiceDate||''}"></div>
+    <div class="field-row"><div class="field"><label>Compagnia assicurativa</label><input id="f_insuranceCompany" value="${esc(c.insuranceCompany||'')}"></div><div class="field"><label>Numero polizza</label><input id="f_insurancePolicy" value="${esc(c.insurancePolicy||'')}"></div></div>
+    <div class="field-row"><div class="field"><label>Scadenza assicurazione</label><input type="date" id="f_insuranceExpiry" value="${c.insuranceExpiry||''}"></div><div class="field"><label>Scadenza bollo</label><input type="date" id="f_roadTaxDue" value="${c.roadTaxDue||''}"></div></div>
+    <div class="field"><label>Altre informazioni (es. assistenza stradale, officina)</label><textarea id="f_carNote">${esc(c.carNote||'')}</textarea></div>
     <div class="modal-actions"><button class="btn ghost" onclick="closeModal()">Annulla</button><button class="btn primary" onclick="saveCar('${id||''}')">Salva</button></div>
   `);
 }
@@ -2276,15 +2405,25 @@ function saveCar(id){
   let item = id ? state.cars.find(x=>x.id===id) : {id:uid()};
   item.name=val('f_name'); item.plate=val('f_plate'); item.model=val('f_model'); item.year=val('f_year'); item.km=val('f_km'); item.startKm=val('f_startKm');
   item.lastServiceKm=val('f_lastServiceKm'); item.serviceIntervalKm=val('f_serviceIntervalKm');
+  item.nextServiceDate=val('f_nextServiceDate'); item.insuranceCompany=val('f_insuranceCompany'); item.insurancePolicy=val('f_insurancePolicy');
+  item.insuranceExpiry=val('f_insuranceExpiry'); item.roadTaxDue=val('f_roadTaxDue'); item.carNote=val('f_carNote');
   if(!id) state.cars.push(item);
+  syncCarReminders(item);
   logActivity(id?'edited':'added','car', item.name);
   closeModal(); saveState();
+}
+function syncCarReminders(car){
+  const name=car.name||'Auto';
+  syncLinkedEvent('car-service-'+car.id,car.nextServiceDate,'Manutenzione · '+name,'Auto');
+  syncLinkedEvent('car-insurance-'+car.id,car.insuranceExpiry,'Scadenza assicurazione · '+name,car.insuranceCompany||'Auto');
+  syncLinkedEvent('car-tax-'+car.id,car.roadTaxDue,'Scadenza bollo · '+name,'Auto');
 }
 function deleteCar(id){
   pushUndo();
   const c = state.cars.find(x=>x.id===id); if(!c) return;
   trashItem('car', c, c.name);
   state.cars=state.cars.filter(x=>x.id!==id);
+  ['service','insurance','tax'].forEach(kind=>removeLinkedEvent(`car-${kind}-${id}`));
   state.carEvents = state.carEvents.filter(e=>{ if(e.carId===id){ removeExpense('car-'+e.id); removeLinkedEvent('carevt-'+e.id); } return e.carId!==id; });
   saveState();
 }
@@ -2326,7 +2465,10 @@ function occursOn(e, y, m, d){
   const target = new Date(y,m,d); const base = new Date(by,bm-1,bd);
   if(target < base) return false;
   const recur = e.recur||'none';
-  if(recur==='none') return by===y && (bm-1)===m && bd===d;
+  if(recur==='none'){
+    const targetDate=`${y}-${pad2(m+1)}-${pad2(d)}`;
+    return targetDate>=e.date && targetDate<=(e.endDate||e.date);
+  }
   if(recur==='monthly') return bd===d;
   if(recur==='yearly') return (bm-1)===m && bd===d;
   return false;
@@ -2435,20 +2577,21 @@ function renderSidebar(){
     ${evts.length? evts.map(e=>`
       <div class="item">
         <div class="item-top">
-          <div><div class="item-title"><span class="legend-dot" style="background:${eventColor(e)};"></span>${e.time?esc(e.time)+' · ':''}${esc(e.title)} ${e.nationalHoliday?'<span class="tag holiday-tag">Festività nazionale</span>':''}${e.linkedFrom?'<span class="tag">Auto</span>':''}${e.recur&&e.recur!=='none'?`<span class="tag badge-recur">${e.recur==='monthly'?'ogni mese':'ogni anno'}</span>`:''}</div>${e.note?`<div class="item-desc">${esc(e.note)}</div>`:''}</div>
-          ${e.nationalHoliday?'':`<div class="item-actions"><button class="btn small ghost" onclick="closeSidebar(); openEventForm('${e.id}','${ds}')">Modifica</button><button class="btn small danger ghost" onclick="confirmDelete('Eliminare questo impegno?', ()=>deleteEvent('${e.id}'))">Elimina</button></div>`}
+          <div><div class="item-title"><span class="legend-dot" style="background:${eventColor(e)};"></span>${e.time?esc(e.time)+' · ':''}${esc(e.title)} ${e.nationalHoliday?'<span class="tag holiday-tag">Festività nazionale</span>':''}${e.linkedFrom?'<span class="tag">Auto</span>':''}${e.recur&&e.recur!=='none'?`<span class="tag badge-recur">${e.recur==='monthly'?'ogni mese':'ogni anno'}</span>`:''}</div>${e.endDate&&e.endDate!==e.date?`<div class="item-meta">Dal ${fmtD(e.date)} al ${fmtD(e.endDate)}</div>`:''}${e.note?`<div class="item-desc">${esc(e.note)}</div>`:''}</div>
+          ${e.nationalHoliday?'':`<div class="item-actions">${e.linkedFrom?'':`<button class="btn small subtle" onclick="duplicateEvent('${e.id}')">Duplica</button>`}<button class="btn small ghost" onclick="closeSidebar(); openEventForm('${e.id}','${ds}')">Modifica</button><button class="btn small danger ghost" onclick="confirmDelete('Eliminare questo impegno?', ()=>deleteEvent('${e.id}'))">Elimina</button></div>`}
         </div>
       </div>`).join('') : `<div class="empty">Nessun impegno questo giorno.</div>`}
   `;
 }
 function openEventForm(id, ds){
-  const e = id ? state.events.find(x=>x.id===id) : {title:'',time:'',note:'',date:ds,recur:'none',category:'Altro'};
+  const e = id ? state.events.find(x=>x.id===id) : {title:'',time:'',note:'',date:ds,endDate:ds,recur:'none',category:'Altro'};
   const isLinked = e.linkedFrom;
   openModal(`
     <h3>${id?'Modifica impegno':'Nuovo impegno'}</h3>
     ${isLinked?`<div class="notice">Questo impegno è collegato automaticamente a una scadenza (${esc(e.note||'')}). Modificalo dalla sezione di origine se vuoi cambiarne la data.</div>`:''}
     <div class="field"><label>Titolo</label><input id="f_title" value="${esc(e.title||'')}" ${isLinked?'disabled':''}></div>
-    <div class="field-row"><div class="field"><label>Data</label><input type="date" id="f_date" value="${e.date||ds}" ${isLinked?'disabled':''}></div><div class="field"><label>Ora (opzionale)</label><input type="time" id="f_time" value="${e.time||''}"></div></div>
+    <div class="field-row"><div class="field"><label>Dal</label><input type="date" id="f_date" value="${e.date||ds}" ${isLinked?'disabled':''}></div><div class="field"><label>Al (opzionale)</label><input type="date" id="f_endDate" value="${e.endDate||e.date||ds}" ${isLinked?'disabled':''}></div></div>
+    <div class="field"><label>Ora (opzionale)</label><input type="time" id="f_time" value="${e.time||''}"></div>
     <div class="field-row">
       <div class="field"><label>Ripetizione</label><select id="f_recur" ${isLinked?'disabled':''}>
         <option value="none" ${(e.recur||'none')==='none'?'selected':''}>Nessuna</option>
@@ -2470,12 +2613,25 @@ function saveEvent(id){
     return;
   }
   if(!val('f_title')){ alert('Aggiungi un titolo.'); return; }
-  item.title=val('f_title'); item.date=val('f_date'); item.time=val('f_time'); item.note=val('f_note'); item.recur=val('f_recur'); item.category=val('f_category');
+  const startDate=val('f_date'), endDate=val('f_endDate')||startDate;
+  if(endDate<startDate){ alert('La data finale non può precedere quella iniziale.'); return; }
+  item.title=val('f_title'); item.date=startDate; item.endDate=endDate===startDate?'':endDate; item.time=val('f_time'); item.note=val('f_note'); item.recur=val('f_recur'); item.category=val('f_category');
   if(!id) state.events.push(item);
   logActivity(id?'edited':'added','event', item.title);
   const [y,m,d] = item.date.split('-').map(Number); calYear=y; calMonth=m-1; selectedDay=d;
   closeModal(); saveState(); renderSidebar();
   document.getElementById('sidebar').classList.add('active'); document.getElementById('scrim').classList.add('active');
+}
+function duplicateEvent(id){
+  const event=state.events.find(item=>item.id===id);
+  if(!event||event.linkedFrom) return;
+  pushUndo();
+  const copy={...event,id:uid(),title:event.title+' (copia)'};
+  state.events.push(copy);
+  selectedDay=Number(copy.date.slice(8,10)); calMonth=Number(copy.date.slice(5,7))-1; calYear=Number(copy.date.slice(0,4));
+  saveState(); renderSidebar();
+  document.getElementById('sidebar').classList.add('active'); document.getElementById('scrim').classList.add('active');
+  toast('Impegno duplicato.');
 }
 function deleteEvent(id){
   pushUndo();
@@ -2492,10 +2648,15 @@ function exportICS(){
   state.events.forEach(e=>{
     if(!e.date) return;
     const dt = e.date.replace(/-/g,'');
+    const end=e.endDate&&e.endDate>=e.date?e.endDate:e.date;
+    const dtEnd=new Date(end+'T00:00'); dtEnd.setDate(dtEnd.getDate()+1);
+    const dtEndText=isoLocal(dtEnd).replace(/-/g,'');
+    const startLine=e.time?`DTSTART:${dt}T${e.time.replace(':','')}00\r\n`:`DTSTART;VALUE=DATE:${dt}\r\n`;
+    const endLine=end===e.date?'':e.time?`DTEND:${dtEndText}T${e.time.replace(':','')}00\r\n`:`DTEND;VALUE=DATE:${dtEndText}\r\n`;
     let rrule = '';
     if(e.recur==='monthly') rrule = 'RRULE:FREQ=MONTHLY\r\n';
     if(e.recur==='yearly') rrule = 'RRULE:FREQ=YEARLY\r\n';
-    ics += `BEGIN:VEVENT\r\nUID:${e.id}@iltaccuino\r\nDTSTAMP:${dt}T000000Z\r\nDTSTART;VALUE=DATE:${dt}\r\n${rrule}SUMMARY:${icsEscape(e.title)}\r\n${e.note?('DESCRIPTION:'+icsEscape(e.note)+'\r\n'):''}END:VEVENT\r\n`;
+    ics += `BEGIN:VEVENT\r\nUID:${e.id}@iltaccuino\r\nDTSTAMP:${dt}T000000Z\r\n${startLine}${endLine}${rrule}SUMMARY:${icsEscape(e.title)}\r\n${e.note?('DESCRIPTION:'+icsEscape(e.note)+'\r\n'):''}END:VEVENT\r\n`;
   });
   ics += 'END:VCALENDAR\r\n';
   const blob = new Blob([ics], {type:'text/calendar;charset=utf-8;'});
@@ -2503,32 +2664,55 @@ function exportICS(){
   const a = document.createElement('a'); a.href=url; a.download=`calendario-taccuino-${todayStr()}.ics`;
   document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
 }
+function openICSImport(source){
+  const instructions=source==='apple'
+    ? 'Esporta il calendario da iCloud.com in formato .ics, quindi seleziona il file salvato nell’app File. iOS non permette a U-Life di leggere direttamente tutti gli appuntamenti dell’app Calendario. I promemoria si importano se il file li contiene come VTODO.'
+    : source==='google'
+      ? 'Da Google Calendar apri Impostazioni → Importa ed esporta → Esporta, estrai il file .ics del calendario e selezionalo qui. L’accesso diretto all’account Google richiederebbe un’autenticazione dedicata.'
+      : 'Seleziona un file .ics dal dispositivo. Su iPhone puoi scegliere una posizione disponibile nell’app File.';
+  openModal(`
+    <h3>Importa calendario</h3>
+    <div class="section-label">${instructions}<br><br>Sono supportati appuntamenti VEVENT e promemoria VTODO contenuti nel file .ics.</div>
+    <input id="icsImportFile" type="file" accept=".ics,text/calendar" style="display:none" onchange="importICS(this)">
+    <div class="modal-actions"><button class="btn ghost" onclick="closeModal()">Annulla</button><button class="btn primary" onclick="document.getElementById('icsImportFile').click()">Seleziona file .ics</button></div>
+  `);
+}
 function importICS(input){
-  pushUndo();
   const file = input.files[0]; if(!file) return;
   const reader = new FileReader();
   reader.onload = (e) => {
     try{
       const text = e.target.result;
-      const blocks = text.split('BEGIN:VEVENT').slice(1);
+      const blocks = [...text.matchAll(/BEGIN:(VEVENT|VTODO)\r?\n([\s\S]*?)\r?\nEND:\1/g)];
+      const imported=[];
       let count = 0;
-      blocks.forEach(b=>{
-        const body = b.split('END:VEVENT')[0];
-        const summaryM = body.match(/SUMMARY:(.*)/);
-        const dtM = body.match(/DTSTART[^:]*:(\d{8})(T(\d{2})(\d{2}))?/);
+      blocks.forEach(block=>{
+        const component=block[1], body=block[2];
+        const summaryM = body.match(/(?:^|\r?\n)SUMMARY:(.*)/);
+        const dtPattern=component==='VTODO'?'(?:DUE|DTSTART)':'DTSTART';
+        const dtM = body.match(new RegExp(`(?:^|\\r?\\n)${dtPattern}[^:]*:(\\d{8})(?:T(\\d{2})(\\d{2})(\\d{2})?Z?)?`));
+        const endM = component==='VEVENT' ? body.match(/(?:^|\r?\n)DTEND[^:]*:(\d{8})(?:T(\d{2})(\d{2})(\d{2})?Z?)?/) : null;
         const descM = body.match(/DESCRIPTION:(.*)/);
         const rruleM = body.match(/RRULE:.*FREQ=(\w+)/);
         if(!summaryM || !dtM) return;
         const y=dtM[1].slice(0,4), mo=dtM[1].slice(4,6), d=dtM[1].slice(6,8);
         const date = `${y}-${mo}-${d}`;
-        const time = dtM[3] ? `${dtM[3]}:${dtM[4]}` : '';
+        const time = dtM[2] ? `${dtM[2]}:${dtM[3]}` : '';
+        let endDate='';
+        if(endM){
+          endDate=`${endM[1].slice(0,4)}-${endM[1].slice(4,6)}-${endM[1].slice(6,8)}`;
+          const isExclusiveEnd=!endM[2] || (endM[2]===dtM[2] && endM[3]===dtM[3]);
+          if(isExclusiveEnd){ const dayBefore=new Date(endDate+'T00:00'); dayBefore.setDate(dayBefore.getDate()-1); endDate=isoLocal(dayBefore); }
+        }
         let recur='none';
         if(rruleM){ if(/MONTHLY/.test(rruleM[1])) recur='monthly'; if(/YEARLY/.test(rruleM[1])) recur='yearly'; }
-        state.events.push({id:uid(), title: unescapeIcsText(summaryM[1]), date, time, note: descM?unescapeIcsText(descM[1]):'', recur});
+        imported.push({id:uid(), title: unescapeIcsText(summaryM[1]), date, endDate:endDate>date?endDate:'', time, note: descM?unescapeIcsText(descM[1]):'', recur});
         count++;
       });
+      if(!count){ alert('Nel file non sono stati trovati appuntamenti .ics supportati.'); return; }
+      pushUndo(); state.events.push(...imported);
       logActivity('added','event', `${count} eventi importati da .ics`);
-      saveState(); toast(`${count} eventi importati.`);
+      closeModal(); saveState(); toast(`${count} eventi importati.`);
     }catch(err){ alert('File .ics non valido o non supportato.'); }
   };
   reader.readAsText(file); input.value='';
@@ -2992,9 +3176,11 @@ function renderSettings(){
     <div class="card-head"><h2 style="font-size:16px;">Calendario</h2></div>
     <div style="display:flex;gap:8px;flex-wrap:wrap;">
       <button style="width: 100%;" class="btn subtle" onclick="exportICS()">Esporta calendario (.ics)</button>
-      <label style="width: 100%;" class="btn subtle" style="text-align:center;display:inline-flex;align-items:center;">Importa calendario (.ics)<input type="file" accept=".ics" style="display:none" onchange="importICS(this)"></label>
+      <button class="btn subtle" onclick="openICSImport('apple')">Importa da Calendario iPhone</button>
+      <button class="btn subtle" onclick="openICSImport('google')">Importa da Google Calendar</button>
+      <button class="btn subtle" onclick="openICSImport('file')">Scegli un file .ics</button>
     </div>
-    <div class="section-label" style="margin-top:8px;">Esporta per vedere i tuoi impegni su Google/Apple Calendar dal telefono, oppure importa un calendario esistente.</div>
+    <div class="section-label" style="margin-top:8px;">Gli appuntamenti vengono importati da un file .ics esportato dal calendario scelto.</div>
   </div>
   <div class="card">
     <div class="card-head"><h2 style="font-size:16px;">Cloud</h2></div>
@@ -3302,7 +3488,7 @@ async function rescheduleNotifications(){
       await ln.cancel({ notifications: pending.notifications.map(n=>({ id:n.id })) });
     }
   }catch(e){ /* nessuna notifica in attesa */ }
-  const list = buildNotificationPlan(cap);
+  const list = buildNotificationPlan(cap).map(notification=>({...notification,sound:'default'}));
   if(!list.length) return;
   try{ await ln.schedule({ notifications:list }); }
   catch(e){ console.warn('Programmazione notifiche non riuscita:', e); }
@@ -3311,7 +3497,7 @@ async function sendTestNotification(){
   if(!(await refreshNotifPermission())){ toast('Prima attiva le notifiche.'); requestWellnessNotifications(); return; }
   if(isNativeApp() && nativeNotifications()){
     try{
-      await nativeNotifications().schedule({ notifications:[{ id:999999, title:'U-Life', body:'Le notifiche funzionano ✅', schedule:{ at:new Date(Date.now()+3000) } }] });
+      await nativeNotifications().schedule({ notifications:[{ id:999999, title:'U-Life', body:'Le notifiche funzionano ✅', schedule:{ at:new Date(Date.now()+3000) }, sound:'default' }] });
       toast('Notifica di prova in arrivo tra 3 secondi.');
     }catch(e){ toast('Invio non riuscito.'); }
   } else {
